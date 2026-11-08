@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>911 GT3 스톱워치</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Montserrat:ital,wght@0,600;0,700;0,800;1,800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --amber:#ffa13a; --red:#e3261c;
+    --font:"Barlow Condensed","DIN Alternate","Bahnschrift","Apple SD Gothic Neo","Noto Sans KR","Arial Narrow",sans-serif;
+    --mono:"Share Tech Mono",ui-monospace,Menlo,monospace;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; }
+  body {
+    min-height:100vh; color:#d8dadf; font-family:var(--font);
+    background:radial-gradient(ellipse at 50% 18%, #20242b 0%, #0d0f12 60%, #050607 100%);
+    display:flex; justify-content:center; padding:24px 14px 40px;
+  }
+  .stage { width:100%; max-width:1280px; }
+
+  /* ===== 계기판 하우징 (알칸타라 바이너클) ===== */
+  .cluster {
+    position:relative; width:100%; aspect-ratio:6.6/3.1;
+    border-radius:40px 40px 90px 90px / 36px 36px 110px 110px;
+    background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,.014) 0 1px, rgba(0,0,0,.03) 1px 3px),
+      linear-gradient(180deg,#141416 0%, #0a0a0b 50%, #060607 100%);
+    box-shadow:
+      inset 0 30px 46px -14px #000,
+      inset 0 -3px 0 #26282b,
+      inset 0 0 0 2px #040404,
+      0 30px 80px rgba(0,0,0,.85),
+      0 0 0 1px #1c1e21;
+    perspective:1600px; overflow:hidden;
+  }
+  .cluster::before { /* 스티치 */
+    content:""; position:absolute; inset:10px; pointer-events:none;
+    border-radius:32px 32px 80px 80px / 28px 28px 100px 100px;
+    border:1.5px dashed rgba(206,170,120,.2);
+  }
+  .cluster::after { /* 상단 후드 그림자 */
+    content:""; position:absolute; left:0; right:0; top:0; height:26%;
+    border-radius:inherit; pointer-events:none; z-index:5;
+    background:linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,0));
+  }
+  .dial { position:absolute; aspect-ratio:1/1; filter:drop-shadow(0 8px 14px rgba(0,0,0,.85)); }
+  .dial canvas { position:absolute; inset:0; width:100%; height:100%; }
+  .dial .glass {
+    position:absolute; inset:3%; border-radius:50%; pointer-events:none;
+    background:linear-gradient(155deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,0) 40%);
+  }
+  /* 실제 클러스터 위치 (타코 반지름 = 1 기준, 바깥쪽일수록 아래로 내려가고 안쪽으로 기울어짐) */
+  .d-oilt  { left:1.5%;  top:47.1%; width:19.1%; z-index:1; transform:rotateY( 24deg); }
+  .d-speed { left:17.3%; top:23.5%; width:23.6%; z-index:2; transform:rotateY( 10deg); }
+  .d-tach  { left:34.1%; top:4.8%;  width:30.3%; z-index:4; filter:drop-shadow(0 10px 16px rgba(0,0,0,.9)) drop-shadow(0 0 22px rgba(0,0,0,.8)); }
+  .d-tft   { left:59.9%; top:26.8%; width:21.8%; z-index:2; transform:rotateY(-10deg); }
+  .d-oilp  { left:80.3%; top:44.5%; width:18.2%; z-index:1; transform:rotateY(-24deg); }
+
+  .spec { text-align:center; margin:18px 0 6px; letter-spacing:.18em; font-size:13px; color:#7d818a; text-transform:uppercase; }
+  .spec b { color:#c9ccd2; font-weight:600; }
+
+  /* ===== 조작부 ===== */
+  .panel {
+    margin:18px auto 0; max-width:760px; padding:22px 22px 18px; border-radius:22px;
+    background:linear-gradient(180deg,#17181b,#0c0d0f); border:1px solid #23262b;
+    box-shadow:0 18px 40px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  .lcd {
+    font-family:var(--mono); text-align:center; font-size:clamp(44px,11vw,84px); line-height:1.1;
+    color:var(--amber); text-shadow:0 0 14px rgba(255,150,40,.45);
+    background:#060707; border-radius:12px; padding:10px 8px; border:1px solid #1d1f22;
+    box-shadow:inset 0 0 24px rgba(0,0,0,.9); font-variant-numeric:tabular-nums;
+  }
+  .records { display:flex; justify-content:space-between; gap:8px; margin:12px 2px 0; font-size:15px; color:#8c9099; letter-spacing:.04em; flex-wrap:wrap; }
+  .records b { color:#e7e9ee; font-weight:600; font-family:var(--mono); }
+  .btns { display:flex; gap:12px; margin:18px 0 6px; flex-wrap:wrap; }
+  button {
+    flex:1 1 120px; padding:15px 10px; font:600 19px var(--font); letter-spacing:.1em; cursor:pointer;
+    color:#e9ebef; border-radius:12px; border:1px solid #3a3d44;
+    background:linear-gradient(180deg,#34373d 0%, #1c1e22 50%, #141518 100%);
+    box-shadow:0 3px 0 #08090a, 0 6px 12px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.12);
+    transition:transform .05s, box-shadow .05s;
+  }
+  button:active { transform:translateY(2px); box-shadow:0 1px 0 #08090a, inset 0 1px 0 rgba(255,255,255,.08); }
+  button:disabled { opacity:.35; cursor:default; }
+  button.go   { background:linear-gradient(180deg,#2f8f4d,#1c5c31 55%,#154726); border-color:#3fae65; }
+  button.stop { background:linear-gradient(180deg,#d6372d,#97201a 55%,#741712); border-color:#ee5a50; }
+  button.on   { color:var(--amber); border-color:#8a5a1d; }
+  ol { list-style:none; margin:14px 0 0; padding:0; max-height:200px; overflow:auto; font-family:var(--mono); }
+  li { display:grid; grid-template-columns:1fr 1.2fr 1.2fr .9fr; gap:6px; padding:9px 4px; border-top:1px solid #23262b; font-size:16px; }
+  li span:first-child { color:#7d818a; }
+  li span:last-child  { text-align:right; color:#9aa0ab; }
+  .hint { text-align:center; color:#5d6168; font-size:13px; margin-top:12px; letter-spacing:.06em; }
+
+  @media (max-width:760px) { body { padding:12px 6px 30px; } .cluster { border-radius:20px 20px 40px 40px / 18px 18px 50px 50px; } .cluster::before { inset:5px; } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cluster" id="cluster">
+    <div class="dial d-oilt"  id="d-oilt"><canvas class="face"></canvas><canvas class="needle"></canvas><div class="glass"></div></div>
+    <div class="dial d-speed" id="d-speed"><canvas class="face"></canvas><canvas class="needle"></canvas><div class="glass"></div></div>
+    <div class="dial d-tach"  id="d-tach"><canvas class="face"></canvas><canvas class="needle"></canvas><div class="glass"></div></div>
+    <div class="dial d-tft"   id="d-tft"><canvas class="face"></canvas><canvas class="needle"></canvas><div class="glass"></div></div>
+    <div class="dial d-oilp"  id="d-oilp"><canvas class="face"></canvas><canvas class="needle"></canvas><div class="glass"></div></div>
+  </div>
+
+  <div class="spec"><b>911 GT3</b> · 991.1 · 3.8L 박서 · 475 PS · 7단 PDK · 레드존 9,000 rpm</div>
+
+  <div class="panel">
+    <div class="lcd" id="time">00:00.00</div>
+    <div class="records">
+      <span>0→100 km/h <b id="r100">--.-</b> s</span>
+      <span>0→200 km/h <b id="r200">--.-</b> s</span>
+      <span>최고 <b id="rmax">0</b> km/h</span>
+    </div>
+    <div class="btns">
+      <button id="lap" disabled>랩</button>
+      <button id="toggle" class="go">시작</button>
+      <button id="reset" disabled>리셋</button>
+      <button id="snd">사운드</button>
+    </div>
+    <ol id="laps"></ol>
+    <div class="hint">스페이스: 시작/정지 · L: 랩 · R: 리셋 · M: 사운드</div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   911 GT3 (991.1) 주행 시뮬레이션 — 순수 물리, DOM 의존 없음
+   ============================================================ */
+// ==SIM-START==
+const TAU = Math.PI * 2, G = 9.81;
+const CAR = {
+  m: 1500,              // 공차 1,430 + 운전자 (kg)
+  R: 0.339,             // 구동륜 동하중반경 (m) — 305/30 R20
+  gears: [3.91, 2.29, 1.65, 1.30, 1.08, 0.88, 0.74], // 7단 PDK (추정 참고치)
+  fd: 4.44,             // 종감속비 (추정 참고치)
+  eta: 0.88,            // 구동계 효율
+  idle: 900, upRpm: 8850, redline: 9000,
+  rho: 1.2, CdA: 0.70, Crr: 0.013,
+  mu: 1.30,             // 타이어 접지 (305 리어)
+  clA: 0.12,            // 다운포스 계수 (CL·A)
+  brakeG: 1.25,         // 제동 감속 (100→0 약 31m)
+  launch: 5000, shiftTime: 0.12   // PDK 변속 시간
+};
+// 엔진 토크 곡선 (rpm, Nm) — 최대 440 Nm@6250, 475PS@8250
+const TQ = [[0,0],[800,170],[1000,250],[2000,300],[3000,340],[4000,380],[5000,415],
+            [6250,440],[7000,432],[8250,404],[8750,382],[9000,362],[9500,330]];
+function tq(r) {
+  if (r <= TQ[0][0]) return TQ[0][1];
+  for (let i = 1; i < TQ.length; i++) if (r <= TQ[i][0]) {
+    const [r0, t0] = TQ[i-1], [r1, t1] = TQ[i];
+    return t0 + (t1 - t0) * (r - r0) / (r1 - r0);
+  }
+  return TQ[TQ.length-1][1];
+}
+const NG = CAR.gears.length;
+const syncRpm = (v, g) => v / CAR.R * CAR.gears[g-1] * CAR.fd * 60 / TAU;
+const pickGear = v => { for (let g = NG; g >= 1; g--) if (syncRpm(v, g) >= 4200) return g; return 1; };
+
+function createSim() {
+  return {
+    v: 0, rpm: CAR.idle, gear: 0, shiftT: 0, brake: 0, dist: 0, load: 0,
+    step(dt, on) {
+      const s = this, C = CAR;
+      const drag = 0.5 * C.rho * C.CdA * s.v * s.v + C.Crr * C.m * G;
+      let target, k;
+      if (on) {
+        s.brake = Math.max(0, s.brake - dt * 8);
+        if (s.gear === 0) { s.gear = pickGear(s.v); s.shiftT = 0; }
+        else if (s.shiftT <= 0 && s.gear > 1 && syncRpm(s.v, s.gear) < 3500) { s.gear = pickGear(s.v); s.shiftT = 0.15; }
+        const sy = syncRpm(s.v, s.gear);
+        if (s.shiftT > 0) {                         // 변속 중: 동력 차단
+          s.shiftT -= dt; target = sy; k = 22; s.load = 0;
+          s.v = Math.max(0, s.v - drag / C.m * dt);
+        } else {
+          target = (s.gear === 1 && sy < C.launch) ? C.launch : sy; k = 24;
+          const T = tq(s.rpm);
+          const Fe = T * C.gears[s.gear-1] * C.fd * C.eta / C.R;
+          const Ft = C.mu * (C.m * G * 0.64 + 0.5 * C.rho * C.clA * s.v * s.v);
+          const F = Math.min(Fe, Ft);
+          s.load = Math.min(1, Fe / 9000);
+          s.v = Math.max(0, s.v + (F - drag) / C.m * dt);
+          if (s.rpm >= C.upRpm && s.gear < NG) { s.gear++; s.shiftT = C.shiftTime; }
+        }
+      } else {                                       // 브레이크
+        s.brake = Math.min(1, s.brake + dt * 6); s.load = 0;
+        const Fb = s.brake * C.brakeG * C.m * G;
+        s.v = Math.max(0, s.v - (Fb + drag) / C.m * dt);
+        if (s.shiftT > 0) s.shiftT -= dt;
+        else if (s.gear > 1 && syncRpm(s.v, s.gear) < 3300) { s.gear--; s.shiftT = 0.15; }
+        if (s.gear === 1 && s.v < 0.4) s.gear = 0;
+        const sy = s.gear ? syncRpm(s.v, s.gear) : 0;
+        target = (s.gear === 0 || sy < 1300) ? C.idle : sy; k = 14;
+      }
+      s.rpm += (target - s.rpm) * (1 - Math.exp(-dt * k));
+      s.rpm = Math.min(s.rpm, C.redline + 60);
+      s.dist += s.v * dt;
+    }
+  };
+}
+// ==SIM-END==
+
+/* ============================================================
+   그리기
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const FONT = '"Barlow Condensed","DIN Alternate","Bahnschrift","Arial Narrow",sans-serif';
+const MONO = '"Share Tech Mono",ui-monospace,Menlo,monospace';
+const A0 = Math.PI * 0.75, SW = Math.PI * 1.5;
+const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+const WHITE = '#eef2f6';
+
+const D = {};
+function mk(name, size) {
+  const w = $('d-' + name), f = w.querySelector('.face'), n = w.querySelector('.needle');
+  f.width = f.height = n.width = n.height = size;
+  D[name] = { S: size, R: size / 2, f: f.getContext('2d'), n: n.getContext('2d') };
+}
+
+function txt(c, s, x, y, size, o = {}) {
+  c.save();
+  c.font = `${o.style || ''} ${o.weight || 600} ${size}px ${o.mono ? MONO : FONT}`;
+  c.fillStyle = o.color || '#e9e9e9';
+  c.textAlign = o.align || 'center'; c.textBaseline = 'middle';
+  if (o.ls && 'letterSpacing' in c) c.letterSpacing = o.ls + 'px';
+  if (o.glow) { c.shadowColor = o.glow; c.shadowBlur = size * 0.5; }
+  c.fillText(s, x, y);
+  c.restore();
+}
+
+// ===== 991.1 GT3 실사 기준 =====
+// 좌표는 모두 각 다이얼의 "터널 반지름(R)"을 1로 한 값. 주황 백라이트 눈금 + 흰색 와이드 숫자 + 깊은 터널
+const ORG = '#ffa826', RED = '#ff4a2a';
+const NUM = '"Montserrat","Barlow Condensed","Arial",sans-serif';
+const D2R = Math.PI / 180;
+
+function txt(c, s, x, y, size, o = {}) {
+  c.save();
+  const fam = o.mono ? MONO : (o.num ? NUM : FONT);
+  c.font = `${o.style || ''} ${o.weight || 600} ${size}px ${fam}`;
+  c.fillStyle = o.color || '#f2f2f2';
+  c.textAlign = o.align || 'center'; c.textBaseline = 'middle';
+  if (o.ls && 'letterSpacing' in c) c.letterSpacing = o.ls + 'px';
+  if (o.glow) { c.shadowColor = o.glow; c.shadowBlur = size * 0.45; }
+  c.fillText(s, x, y);
+  c.restore();
+}
+
+// 터널(깔때기) + 백라이트 빛줄기 + 어두운 문자판
+function baseFace(c, S, F) {
+  const R = S / 2, Rf = R * F;
+  c.clearRect(0, 0, S, S); c.save(); c.translate(R, R);
+  c.fillStyle = '#080808'; c.beginPath(); c.arc(0, 0, R, 0, TAU); c.fill();
+  c.strokeStyle = 'rgba(140,142,148,.35)'; c.lineWidth = R * .012;
+  c.beginPath(); c.arc(0, 0, R * .985, Math.PI * 1.02, Math.PI * 1.98); c.stroke();
+  // 깔때기 벽 (따뜻한 주황 백라이트)
+  let g = c.createRadialGradient(0, 0, Rf, 0, 0, R * .96);
+  g.addColorStop(0, '#0f0905'); g.addColorStop(.35, '#3d2512'); g.addColorStop(.75, '#2c190b'); g.addColorStop(1, '#0a0604');
+  c.fillStyle = g; c.beginPath(); c.arc(0, 0, R * .96, 0, TAU); c.fill();
+  c.save(); c.beginPath(); c.arc(0, 0, R * .96, 0, TAU); c.arc(0, 0, Rf, 0, TAU, true); c.clip('evenodd');
+  g = c.createLinearGradient(-R, -R, R, R);
+  g.addColorStop(0, 'rgba(255,170,80,.30)'); g.addColorStop(.5, 'rgba(255,150,60,.06)'); g.addColorStop(1, 'rgba(255,150,60,.16)');
+  c.fillStyle = g; c.fillRect(-R, -R, 2 * R, 2 * R);
+  for (let i = 0; i < 220; i++) {                      // 도광 링의 빛줄기
+    const a = i / 220 * TAU, al = .05 + .16 * Math.abs(Math.sin(i * 12.9898) * Math.cos(i * 4.1));
+    c.strokeStyle = `rgba(255,176,96,${al})`; c.lineWidth = R * .006;
+    c.beginPath(); c.moveTo(Math.cos(a) * Rf * 1.01, Math.sin(a) * Rf * 1.01); c.lineTo(Math.cos(a) * R * .94, Math.sin(a) * R * .94); c.stroke();
+  }
+  c.restore();
+  // 문자판
+  g = c.createRadialGradient(-Rf * .2, -Rf * .3, Rf * .05, 0, 0, Rf);
+  g.addColorStop(0, '#171717'); g.addColorStop(.7, '#0b0b0b'); g.addColorStop(1, '#040404');
+  c.fillStyle = g; c.beginPath(); c.arc(0, 0, Rf, 0, TAU); c.fill();
+  c.strokeStyle = 'rgba(255,150,60,.25)'; c.lineWidth = R * .008; c.beginPath(); c.arc(0, 0, Rf, 0, TAU); c.stroke();
+  // 후드 그림자
+  c.save(); c.beginPath(); c.arc(0, 0, Rf, 0, TAU); c.clip();
+  g = c.createLinearGradient(0, -Rf, 0, Rf * .4);
+  g.addColorStop(0, 'rgba(0,0,0,.55)'); g.addColorStop(.5, 'rgba(0,0,0,.1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  c.fillStyle = g; c.fillRect(-Rf, -Rf, Rf * 2, Rf * 2); c.restore();
+  c.restore();
+}
+
+function scale(c, R, o) {
+  const st = o.start, sw = o.sweep, tr = o.tr;
+  const f = v => st + sw * (v - o.min) / (o.max - o.min);
+  const inRed = v => (o.reds || []).some(r => v >= r[0] - 1e-6 && v <= r[1] + 1e-6);
+  const L = o.L || [.075, .05, .03], W = o.W || [.022, .016, .012];
+  (o.reds || []).forEach(r => {                        // 레드존: 두껍게 빛나는 주황-적색 띠
+    c.save(); c.lineWidth = R * (o.redW || .075);
+    const g = c.createLinearGradient(0, -R, 0, R); g.addColorStop(0, '#ff7a2a'); g.addColorStop(1, '#e2381a');
+    c.strokeStyle = g; c.shadowColor = 'rgba(255,90,40,.8)'; c.shadowBlur = R * .05;
+    c.beginPath(); c.arc(0, 0, R * (tr - .04), f(r[0]), f(r[1]), sw < 0); c.stroke(); c.restore();
+  });
+  const N = Math.round((o.max - o.min) / o.minor);
+  const isMul = (v, m) => m && Math.abs((v - o.min) / m - Math.round((v - o.min) / m)) < 1e-6;
+  for (let i = 0; i <= N; i++) {
+    const v = o.min + i * o.minor, maj = isMul(v, o.major), mid = isMul(v, o.mid);
+    if (o.skipRed && inRed(v) && !maj) continue;
+    const k = maj ? 0 : mid ? 1 : 2;
+    c.save(); c.rotate(f(v)); c.strokeStyle = inRed(v) ? '#ffd0b8' : ORG;
+    c.shadowColor = 'rgba(255,150,30,.7)'; c.shadowBlur = R * .012;
+    c.lineWidth = W[k] * R; c.beginPath(); c.moveTo(tr * R, 0); c.lineTo((tr - L[k]) * R, 0); c.stroke(); c.restore();
+  }
+  (o.labels || []).forEach(v => {
+    const a = f(v), r = o.lr * R;
+    txt(c, o.fmt ? o.fmt(v) : String(v), Math.cos(a) * r, Math.sin(a) * r, o.ls * R,
+        { color: '#f6f6f6', weight: 700, num: true });
+  });
+}
+function rng(a, b, n) { const r = []; for (let v = a; v <= b + 1e-9; v += n) r.push(v); return r; }
+
+/* ----- 7세그먼트 숫자 (LCD) ----- */
+const SEG = { 0: 'abcdef', 1: 'bc', 2: 'abdeg', 3: 'abcdg', 4: 'bcfg', 5: 'acdfg', 6: 'acdefg', 7: 'abc', 8: 'abcdefg', 9: 'abcdfg' };
+function seg7(c, str, x, y, h, color, align = 'left') {
+  const w = h * .56, t = h * .14, gap = h * .22;
+  let total = -gap; for (const ch of str) total += (ch === '.' ? t * 2 : w + gap);
+  let cx = align === 'right' ? x - total : align === 'center' ? x - total / 2 : x;
+  c.save(); c.fillStyle = color; c.shadowColor = color; c.shadowBlur = h * .3;
+  const hz = (xx, yy) => { c.beginPath(); c.roundRect(xx + t * .5, yy, w - t, t, t * .35); c.fill(); };
+  const vt = (xx, yy) => { c.beginPath(); c.roundRect(xx, yy, t, h / 2 - t * .8, t * .35); c.fill(); };
+  for (const ch of str) {
+    if (ch === '.') { c.fillRect(cx + t * .3, y + h / 2 - t, t, t); cx += t * 2; continue; }
+    const s = SEG[ch] || '', x0 = cx, y0 = y - h / 2;
+    if (s.includes('a')) hz(x0, y0);
+    if (s.includes('g')) hz(x0, y0 + h / 2 - t / 2);
+    if (s.includes('d')) hz(x0, y0 + h - t);
+    if (s.includes('f')) vt(x0, y0 + t * .6);
+    if (s.includes('b')) vt(x0 + w - t, y0 + t * .6);
+    if (s.includes('e')) vt(x0, y0 + h / 2 + t * .2);
+    if (s.includes('c')) vt(x0 + w - t, y0 + h / 2 + t * .2);
+    cx += w + gap;
+  }
+  c.restore();
+}
+
+/* ----- 아이콘 ----- */
+function ico(c, R, k, x, y, s, col, a) {
+  x *= R; y *= R; s *= R;
+  c.save(); c.globalAlpha = a; c.strokeStyle = c.fillStyle = col; c.lineWidth = s * .11; c.lineJoin = 'round'; c.lineCap = 'round';
+  if (a > .5) { c.shadowColor = col; c.shadowBlur = s * .5; }
+  if (k === 'arrL' || k === 'arrR') {
+    const d = k === 'arrL' ? -1 : 1;
+    c.beginPath(); c.moveTo(x + d * s * .5, y); c.lineTo(x - d * s * .1, y - s * .42); c.lineTo(x - d * s * .1, y - s * .16);
+    c.lineTo(x - d * s * .5, y - s * .16); c.lineTo(x - d * s * .5, y + s * .16); c.lineTo(x - d * s * .1, y + s * .16);
+    c.lineTo(x - d * s * .1, y + s * .42); c.closePath(); c.fill();
+  } else if (k === 'head') {
+    c.beginPath(); c.arc(x + s * .1, y, s * .34, -Math.PI / 2, Math.PI / 2); c.closePath(); c.fill();
+    for (let i = -1; i <= 1; i++) { c.beginPath(); c.moveTo(x - s * .12, y + i * s * .22); c.lineTo(x - s * .5, y + i * s * .26); c.stroke(); }
+  } else if (k === 'belt') {
+    c.beginPath(); c.arc(x, y - s * .3, s * .13, 0, TAU); c.fill();
+    c.beginPath(); c.moveTo(x - s * .22, y - s * .1); c.lineTo(x + s * .12, y - s * .1); c.lineTo(x + s * .2, y + s * .36); c.lineTo(x - s * .16, y + s * .36); c.closePath(); c.fill();
+    c.beginPath(); c.moveTo(x - s * .24, y - s * .14); c.lineTo(x + s * .2, y + s * .3); c.stroke();
+  } else if (k === 'park') {
+    c.beginPath(); c.arc(x, y, s * .34, 0, TAU); c.stroke();
+    c.font = `700 ${s * .5}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('P', x, y + s * .02);
+  } else if (k === 'oil') {
+    c.beginPath(); c.roundRect(x - s * .3, y - s * .12, s * .46, s * .3, s * .05); c.stroke();
+    c.beginPath(); c.moveTo(x + s * .16, y - s * .02); c.lineTo(x + s * .42, y - s * .22); c.stroke();
+    c.beginPath(); c.arc(x + s * .36, y + s * .3, s * .06, 0, TAU); c.fill();
+  } else if (k === 'therm') {
+    c.beginPath(); c.moveTo(x, y - s * .38); c.lineTo(x, y + s * .12); c.stroke();
+    c.beginPath(); c.arc(x, y + s * .22, s * .13, 0, TAU); c.fill();
+    c.beginPath(); c.moveTo(x + s * .22, y - s * .2); c.lineTo(x + s * .42, y - s * .2); c.moveTo(x + s * .22, y - s * .02); c.lineTo(x + s * .42, y - s * .02); c.stroke();
+  } else if (k === 'pump') {
+    c.beginPath(); c.roundRect(x - s * .28, y - s * .34, s * .4, s * .68, s * .05); c.stroke();
+    c.beginPath(); c.moveTo(x + s * .12, y - s * .14); c.lineTo(x + s * .32, y - s * .14); c.lineTo(x + s * .32, y + s * .2); c.stroke();
+    c.beginPath(); c.moveTo(x - s * .2, y - s * .24); c.lineTo(x + s * .04, y - s * .24); c.stroke();
+  } else {                                           // 문자 표시등
+    c.font = `600 ${s * .5}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle';
+    if ('letterSpacing' in c) c.letterSpacing = s * .05 + 'px';
+    c.fillText(k, x, y);
+  }
+  c.restore();
+}
+const TACH_ICONS = [
+  { k: 'BRAKE', x: -.37, y: -.3,  s: .13, col: '#ff3b30', lit: s => s.sweep || s.brake },
+  { k: 'belt',  x: -.47, y: -.11, s: .15, col: '#ff3b30', lit: s => s.sweep || s.belt },
+  { k: 'ABS',   x: .37,  y: -.3,  s: .11, col: '#ffae2a', lit: s => s.sweep },
+  { k: 'park',  x: -.36, y: .12,  s: .13, col: '#ff3b30', lit: s => s.sweep || s.park },
+  { k: 'arrL',  x: -.22, y: -.5,  s: .1,  col: '#31d27a', lit: s => s.sweep },
+  { k: 'arrR',  x: .22,  y: -.5,  s: .1,  col: '#31d27a', lit: s => s.sweep }
+];
+const GEARCOL = ['P', 'R', 'N', 'D'];
+
+/* ----- 다이얼별 정적 면 ----- */
+function faceTach() {
+  const { f: c, S, R } = D.tach; baseFace(c, S, .88); c.save(); c.translate(R, R);
+  scale(c, R, { min: 0, max: 10000, major: 1000, minor: 200, start: A0, sweep: SW, tr: .855,
+                labels: rng(0, 10000, 1000), fmt: v => v / 1000, lr: .66, ls: .165,
+                reds: [[9000, 10000]], redW: .085, skipRed: true, L: [.1, .06, .045] });
+  txt(c, 'GT3', 0, -.24 * R, .14 * R, { style: 'italic', weight: 800, num: true, color: '#f7e6e6', glow: 'rgba(255,110,110,.55)' });
+  TACH_ICONS.forEach(i => ico(c, R, i.k, i.x, i.y, i.s, '#8a8f97', .16));
+  // PRNDM
+  c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = R * .006;
+  c.beginPath(); c.moveTo(.155 * R, .2 * R); c.lineTo(.155 * R, .5 * R); c.stroke();
+  GEARCOL.forEach((g, i) => txt(c, g, .21 * R, (.22 + i * .08) * R, .06 * R, { color: '#e9e9e9', weight: 700, num: true }));
+  txt(c, 'M', .07 * R, .46 * R, .06 * R, { color: '#e9e9e9', weight: 700, num: true });
+  txt(c, '–', .07 * R, .38 * R, .05 * R, { color: '#e9e9e9', weight: 700 });
+  txt(c, '+', .07 * R, .53 * R, .05 * R, { color: '#e9e9e9', weight: 700 });
+  c.restore();
+}
+const SP = { start: 139 * D2R, sweep: 160 * D2R, max: 360 };
+function faceSpeed() {
+  const { f: c, S, R } = D.speed; baseFace(c, S, .86); c.save(); c.translate(R, R);
+  scale(c, R, { min: 0, max: SP.max, major: 40, minor: 10, start: SP.start, sweep: SP.sweep, tr: .86,
+                labels: rng(0, 360, 40), lr: .64, ls: .1, L: [.09, .055, .04] });
+  txt(c, 'km/h', 0, -.5 * R, .05 * R, { color: '#e9e9e9', weight: 700, num: true, ls: 1 });
+  c.restore();
+}
+function faceTFT() {
+  const { f: c, S, R } = D.tft; baseFace(c, S, .9); c.save(); c.translate(R, R);
+  c.beginPath(); c.roundRect(-.76 * R, -.84 * R, 1.52 * R, 1.62 * R, .38 * R);
+  c.fillStyle = '#2a2b2e'; c.fill();
+  c.beginPath(); c.roundRect(-.745 * R, -.825 * R, 1.49 * R, 1.59 * R, .37 * R);
+  c.fillStyle = '#050607'; c.fill();
+  c.restore();
+}
+const DUAL = {
+  oilt: { up: { start: 207 * D2R, sweep: 60 * D2R, min: 60, max: 150 }, lo: { start: 150 * D2R, sweep: -120 * D2R, min: 0, max: 5 } },
+  oilp: { up: { start: 333 * D2R, sweep: -60 * D2R, min: 50, max: 130 }, lo: { start: 150 * D2R, sweep: -120 * D2R, min: 0, max: 1 } }
+};
+function faceDual(name, cfg) {
+  const { f: c, S, R } = D[name]; baseFace(c, S, .8); c.save(); c.translate(R, R);
+  const d = DUAL[name], opt = { tr: .6, lr: .45, ls: .095, L: [.07, .045, .032], W: [.018, .014, .01] };
+  scale(c, R, { ...cfg.up, ...d.up, ...opt });
+  scale(c, R, { ...cfg.lo, ...d.lo, ...opt });
+  cfg.icons.forEach(i => ico(c, R, i[0], i[1], i[2], .17, '#f2f2f2', .9));
+  c.restore();
+}
+
+/* ----- 바늘: 굵은 주황색 + 검은 원판 허브 ----- */
+function needle(c, R, a, o) {
+  c.save(); c.rotate(a);
+  const path = () => {
+    c.beginPath();
+    c.moveTo(-o.tail * R, -o.w * R * .9); c.lineTo(0, -o.w * R); c.lineTo(o.len * R, -o.w * R * .62);
+    c.lineTo(o.len * R, o.w * R * .62); c.lineTo(0, o.w * R); c.lineTo(-o.tail * R, o.w * R * .9); c.closePath();
+  };
+  c.shadowColor = 'rgba(0,0,0,.7)'; c.shadowBlur = R * .04; c.shadowOffsetX = R * .015; c.shadowOffsetY = R * .03;
+  path(); c.fillStyle = '#000'; c.fill();
+  c.shadowColor = 'rgba(255,120,20,.8)'; c.shadowBlur = R * .04; c.shadowOffsetX = c.shadowOffsetY = 0;
+  const g = c.createLinearGradient(0, -o.w * R, 0, o.w * R);
+  g.addColorStop(0, '#ffa23a'); g.addColorStop(.5, '#ff8212'); g.addColorStop(1, '#e06a06');
+  path(); c.fillStyle = g; c.fill();
+  c.restore();
+}
+function hub(c, r) {
+  const g = c.createRadialGradient(-r * .25, -r * .3, r * .1, 0, 0, r);
+  g.addColorStop(0, '#222224'); g.addColorStop(.7, '#0c0c0d'); g.addColorStop(1, '#030303');
+  c.fillStyle = g; c.beginPath(); c.arc(0, 0, r, 0, TAU); c.fill();
+  c.strokeStyle = 'rgba(255,150,60,.22)'; c.lineWidth = r * .06; c.beginPath(); c.arc(0, 0, r * .96, 0, TAU); c.stroke();
+}
+
+function nTach(rpm, gear, kmh, st) {
+  const { n: c, S, R } = D.tach; c.clearRect(0, 0, S, S); c.save(); c.translate(R, R);
+  if (st.limit) { c.save(); c.lineWidth = R * .1; c.strokeStyle = 'rgba(255,60,30,.5)'; c.shadowColor = '#ff3020'; c.shadowBlur = R * .1;
+    c.beginPath(); c.arc(0, 0, R * .81, A0 + SW * .9, A0 + SW); c.stroke(); c.restore(); }
+  TACH_ICONS.forEach(i => { if (i.lit(st)) ico(c, R, i.k, i.x, i.y, i.s, i.col, 1); });
+  const gi = st.park ? 0 : 3;
+  c.fillStyle = '#ff3b30'; c.shadowColor = '#ff3b30'; c.shadowBlur = R * .03;
+  c.beginPath(); c.arc(.285 * R, (.22 + gi * .08) * R, R * .014, 0, TAU); c.fill(); c.shadowBlur = 0;
+  if (gear) seg7(c, String(gear), -.08 * R, .33 * R, .09 * R, WHITE, 'center');
+  seg7(c, String(Math.round(kmh)), .12 * R, .66 * R, .17 * R, WHITE, 'right');
+  txt(c, 'km/h', .17 * R, .7 * R, .045 * R, { color: '#e9e9e9', weight: 700, num: true, align: 'left' });
+  needle(c, R, A0 + SW * clamp(rpm / 10000, 0, 1.03), { len: .83, tail: .02, w: .028 }); hub(c, R * .16);
+  c.restore();
+}
+function nSpeed(kmh, trip, st) {
+  const { n: c, S, R } = D.speed; c.clearRect(0, 0, S, S); c.save(); c.translate(R, R);
+  ico(c, R, 'head', .04, .29, .12, '#31d27a', 1);
+  seg7(c, String(Math.floor(8567 + trip / 1000)), .3 * R, .56 * R, .12 * R, WHITE, 'right');
+  txt(c, 'km', .34 * R, .58 * R, .04 * R, { color: '#e9e9e9', weight: 700, num: true, align: 'left' });
+  seg7(c, (trip / 1000).toFixed(1), .3 * R, .72 * R, .12 * R, WHITE, 'right');
+  needle(c, R, SP.start + SP.sweep * clamp(kmh / SP.max, 0, 1.03), { len: .66, tail: .02, w: .035 }); hub(c, R * .15);
+  c.restore();
+}
+function nTFT(timeStr, rangeKm) {
+  const { n: c, S, R } = D.tft; c.clearRect(0, 0, S, S); c.save(); c.translate(R, R);
+  const g = R * .78, now = new Date(), W = '#f4f6f8';
+  // 항속거리
+  ico(c, g, 'pump', -.26, -.97 + .0, .26, W, 1);
+  txt(c, rangeKm + ' km', .2 * g, -.97 * g, .17 * g, { color: W, weight: 700, num: true });
+  // 헤더 바 (스톱워치 시간)
+  c.beginPath(); c.moveTo(-.46 * g, -.8 * g); c.lineTo(.86 * g, -.8 * g); c.lineTo(.98 * g, -.57 * g); c.lineTo(-.46 * g, -.57 * g); c.closePath();
+  const hg = c.createLinearGradient(0, -.8 * g, 0, -.57 * g); hg.addColorStop(0, '#46474b'); hg.addColorStop(1, '#232427');
+  c.fillStyle = hg; c.fill();
+  c.fillStyle = '#e4482a'; c.fillRect(-.46 * g, -.575 * g, 1.44 * g, .018 * g);
+  txt(c, timeStr, -.4 * g, -.69 * g, .19 * g, { color: W, weight: 700, num: true, align: 'left' });
+  // 차량(위에서 본 모습) + 타이어 압력
+  const body = c.createLinearGradient(-.26 * g, 0, .26 * g, 0); body.addColorStop(0, '#9c9ca2'); body.addColorStop(.5, '#d8d8dc'); body.addColorStop(1, '#9c9ca2');
+  c.fillStyle = '#5c5c62';
+  [[-.37, -.44], [.27, -.44], [-.37, .2], [.27, .2]].forEach(([x, y]) => { c.beginPath(); c.roundRect(x * g, y * g, .1 * g, .24 * g, .03 * g); c.fill(); });
+  c.fillStyle = body; c.beginPath(); c.roundRect(-.26 * g, -.52 * g, .52 * g, 1.02 * g, .2 * g); c.fill();
+  c.fillStyle = '#3c3c42'; c.beginPath(); c.roundRect(-.2 * g, -.2 * g, .4 * g, .4 * g, .08 * g); c.fill();
+  c.fillStyle = '#4a4a50'; c.beginPath(); c.roundRect(-.18 * g, -.38 * g, .36 * g, .14 * g, .05 * g); c.fill();
+  [[-.39, -.33, '2.2'], [.37, -.34, '2.2'], [-.42, .37, '2.4'], [.33, .37, '2.4']].forEach(([x, y, v]) =>
+    txt(c, v, x * g, y * g, .16 * g, { color: W, weight: 700, num: true }));
+  txt(c, 'bar', .72 * g, .04 * g, .11 * g, { color: '#d8d8dc', weight: 600, num: true });
+  // 시계/온도
+  c.fillStyle = 'rgba(255,255,255,.7)'; c.fillRect(-.98 * g, .58 * g, 1.8 * g, .012 * g);
+  txt(c, p2(now.getHours()) + ':' + p2(now.getMinutes()), -.09 * g, .73 * g, .19 * g, { color: W, weight: 700, num: true });
+  txt(c, '23 °C', -.09 * g, .92 * g, .14 * g, { color: W, weight: 600, num: true });
+  c.restore();
+}
+function nDual(name, up, lo) {
+  const { n: c, S, R } = D[name]; c.clearRect(0, 0, S, S); c.save(); c.translate(R, R);
+  const d = DUAL[name];
+  const o = { len: .52, tail: .02, w: .035 };
+  needle(c, R, d.up.start + d.up.sweep * clamp(up, 0, 1.05), o);
+  needle(c, R, d.lo.start + d.lo.sweep * clamp(lo, 0, 1.05), o);
+  hub(c, R * .13);
+  c.restore();
+}
+
+/* ============================================================
+   스톱워치 + 차량 연결
+   ============================================================ */
+const sim = createSim();
+let running = false, elapsed = 0, startAt = 0, lastLap = 0, laps = [];
+const swNow = () => elapsed + (running ? performance.now() - startAt : 0);
+
+const p2 = n => String(n).padStart(2, '0');
+function fmt(ms) {
+  const cs = Math.floor(ms / 10) % 100, s = Math.floor(ms / 1000) % 60, m = Math.floor(ms / 60000) % 60, h = Math.floor(ms / 3600000);
+  return (h ? h + ':' : '') + p2(m) + ':' + p2(s) + '.' + p2(cs);
+}
+
+const rec = { t: 0, active: false, r100: null, r200: null, vmax: 0 };
+const r1 = () => rec.r100 === null ? '--.-' : rec.r100.toFixed(1);
+const r2 = () => rec.r200 === null ? '--.-' : rec.r200.toFixed(1);
+function recordStep(dt) {
+  if (rec.active && running) {
+    rec.t += dt;
+    if (rec.r100 === null && sim.v * 3.6 >= 100) { rec.r100 = rec.t; $('r100').textContent = rec.t.toFixed(1); }
+    if (rec.r200 === null && sim.v * 3.6 >= 200) { rec.r200 = rec.t; $('r200').textContent = rec.t.toFixed(1); }
+  }
+  const k = Math.round(sim.v * 3.6);
+  if (k > rec.vmax) { rec.vmax = k; $('rmax').textContent = k; }
+}
+
+function toggle() {
+  ensureAudio();
+  if (running) {
+    elapsed += performance.now() - startAt; running = false;
+    $('toggle').textContent = '계속'; $('toggle').className = 'go'; $('lap').disabled = true;
+  } else {
+    if (sim.v < 0.5) { rec.active = true; rec.t = 0; rec.r100 = rec.r200 = null; rec.vmax = 0;
+      $('r100').textContent = $('r200').textContent = '--.-'; $('rmax').textContent = '0'; }
+    startAt = performance.now(); running = true;
+    $('toggle').textContent = '정지'; $('toggle').className = 'stop';
+    $('lap').disabled = false; $('reset').disabled = false;
+  }
+}
+function lap() {
+  if (!running) return;
+  const t = swNow(); laps.unshift({ n: laps.length + 1, split: t - lastLap, total: t, kmh: Math.round(sim.v * 3.6) }); lastLap = t;
+  $('laps').innerHTML = laps.map(l =>
+    `<li><span>랩 ${l.n}</span><span>${fmt(l.split)}</span><span>${fmt(l.total)}</span><span>${l.kmh} km/h</span></li>`).join('');
+}
+function reset() {
+  if (running) toggle();
+  elapsed = 0; lastLap = 0; laps = []; $('laps').innerHTML = ''; $('reset').disabled = true;
+  $('toggle').textContent = '시작';
+}
+$('toggle').onclick = toggle; $('lap').onclick = lap; $('reset').onclick = reset;
+addEventListener('keydown', e => {
+  if (e.code === 'Space') { e.preventDefault(); toggle(); }
+  else if (e.key.toLowerCase() === 'l') lap();
+  else if (e.key.toLowerCase() === 'r') reset();
+  else if (e.key.toLowerCase() === 'm') $('snd').click();
+});
+
+/* ----- 엔진 사운드 (선택) ----- */
+let ac = null, o1, o2, filt, vol, soundOn = false;
+function ensureAudio() { if (soundOn && ac && ac.state === 'suspended') ac.resume(); }
+$('snd').onclick = () => {
+  soundOn = !soundOn; $('snd').classList.toggle('on', soundOn);
+  if (soundOn && !ac) {
+    ac = new (window.AudioContext || window.webkitAudioContext)();
+    o1 = ac.createOscillator(); o1.type = 'sawtooth';
+    o2 = ac.createOscillator(); o2.type = 'square';
+    filt = ac.createBiquadFilter(); filt.type = 'lowpass'; filt.Q.value = 2;
+    vol = ac.createGain(); vol.gain.value = 0;
+    const g2 = ac.createGain(); g2.gain.value = .35;
+    o1.connect(filt); o2.connect(g2); g2.connect(filt); filt.connect(vol); vol.connect(ac.destination);
+    o1.start(); o2.start();
+  }
+  if (ac) { soundOn ? ac.resume() : (vol.gain.setTargetAtTime(0, ac.currentTime, .05)); }
+};
+function audioUpdate() {
+  if (!ac || !soundOn) return;
+  const t = ac.currentTime, f = sim.rpm / 60 * 3;           // 수평대향 6기통: 회전당 3폭발
+  o1.frequency.setTargetAtTime(f, t, .02); o2.frequency.setTargetAtTime(f * 2, t, .02);
+  filt.frequency.setTargetAtTime(350 + sim.rpm * .75 + sim.load * 900, t, .04);
+  vol.gain.setTargetAtTime(0.05 + 0.13 * (sim.load * .8 + sim.rpm / 9000 * .2), t, .05);
+}
+
+/* ============================================================
+   메인 루프
+   ============================================================ */
+const disp = { rpm: 0, kmh: 0, oilT: 60, oilP: 0 };
+let oilT = 82, coolT = 78, last = 0, t0 = null;
+const sweepDur = 1.9;
+
+function frame(ts) {
+  if (t0 === null) t0 = ts;
+  const dt = Math.min(0.05, last ? (ts - last) / 1000 : 0.016); last = ts;
+  const n = 4; for (let i = 0; i < n; i++) sim.step(dt / n, running);
+  recordStep(dt); audioUpdate();
+
+  oilT += ((84 + 38 * sim.load * (0.4 + sim.rpm / 9000) + 10 * sim.rpm / 9000) - oilT) * dt / 45;
+  const oilP = sim.rpm < 500 ? 0 : 1.0 + 3.3 * (sim.rpm / 9000) + 0.08 * Math.sin(ts / 90);
+
+  const kk = 1 - Math.exp(-dt * 16);
+  const idleJit = sim.gear === 0 || sim.v < 1 ? Math.sin(ts / 53) * 14 + Math.sin(ts / 131) * 9 : 0;
+  disp.rpm += (sim.rpm + idleJit - disp.rpm) * kk;
+  disp.kmh += (sim.v * 3.6 - disp.kmh) * kk;
+  disp.oilT += (oilT - disp.oilT) * kk; disp.oilP += (oilP - disp.oilP) * kk;
+
+  let rpm = disp.rpm, kmh = disp.kmh, oT = disp.oilT, oP = disp.oilP;
+  const el = (ts - t0) / 1000, sweeping = el < sweepDur;
+  if (sweeping) {                                          // 시동 시 전체 바늘 스윕
+    const e = Math.sin(Math.min(1, el / sweepDur) * Math.PI) ** 0.9;
+    rpm = Math.max(rpm, 10000 * e); kmh = Math.max(kmh, 340 * e); oT = Math.max(oT, 50 + 100 * e); oP = Math.max(oP, 5 * e); coolT = Math.max(coolT, 50 + 80 * e);
+  }
+  const tstr = fmt(swNow());
+  const st = { sweep: sweeping, brake: !running && sim.v > 0.3, limit: sim.rpm > 8800 };
+  st.park = !running && sim.v < 0.3 && sim.gear === 0;
+  coolT += ((80 + 12 * sim.load + 6 * sim.rpm / 9000) - coolT) * dt / 60;
+  const fuel = Math.max(0.05, 0.62 - sim.dist * 2.4e-6);
+  nTach(rpm, sim.gear, kmh, st); nSpeed(kmh, sim.dist, st);
+  nTFT(tstr, Math.round(fuel * 520));
+  nDual('oilt', (oT - 60) / 90, oP / 5);
+  nDual('oilp', (coolT - 50) / 80, fuel);
+
+  $('time').textContent = tstr;
+  requestAnimationFrame(frame);
+}
+
+function init() {
+  mk('tach', 900); mk('speed', 800); mk('tft', 640); mk('oilt', 480); mk('oilp', 480);
+  faceTach(); faceSpeed(); faceTFT();
+  faceDual('oilt', { up: { major: 20, minor: 5, labels: [80, 100, 120, 140], reds: [[135, 150]] },
+                     lo: { major: 1, minor: .25, labels: [0, 1, 2, 3, 4, 5], reds: [[0, .4]] },
+                     icons: [['oil', -.7, -.3], ['oil', -.58, .18]] });
+  faceDual('oilp', { up: { major: 20, minor: 5, labels: [60, 90, 120], reds: [[115, 130]] },
+                     lo: { major: .25, minor: .125, labels: [0, .5, 1], fmt: v => v === 0 ? '0' : v === 1 ? '4/4' : '2/4', reds: [[0, .1]] },
+                     icons: [['therm', .66, -.28], ['pump', .6, .2]] });
+  requestAnimationFrame(frame);
+}
+const fontsReady = (document.fonts && document.fonts.load)
+  ? Promise.race([Promise.all([document.fonts.load('600 40px "Barlow Condensed"'), document.fonts.load('700 40px "Montserrat"'), document.fonts.load('italic 800 40px "Montserrat"'), document.fonts.load('400 40px "Share Tech Mono"')]).catch(() => {}),
+                  new Promise(r => setTimeout(r, 1500))])
+  : Promise.resolve();
+fontsReady.then(init);
+</script>
+</body>
+</html>

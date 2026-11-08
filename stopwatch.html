@@ -6,7 +6,7 @@
 <title>911 GT3 스톱워치</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Montserrat:ital,wght@0,600;0,700;0,800;1,800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,500;0,600;0,700;1,700&family=Barlow+Semi+Condensed:wght@500;600;700&family=Saira:ital,wdth,wght@0,100..125,500..700;1,100..125,500..700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
     --amber:#ffa13a; --red:#e3261c;
@@ -17,48 +17,47 @@
   html,body { margin:0; }
   body {
     min-height:100vh; color:#d8dadf; font-family:var(--font);
-    background:radial-gradient(ellipse at 50% 18%, #20242b 0%, #0d0f12 60%, #050607 100%);
+    background:radial-gradient(ellipse at 50% 18%, #141518 0%, #09090a 60%, #040405 100%);
     display:flex; justify-content:center; padding:24px 14px 40px;
   }
   .stage { width:100%; max-width:1280px; }
 
   /* ===== 계기판 하우징 (알칸타라 바이너클) ===== */
   .cluster {
-    position:relative; width:100%; aspect-ratio:6.6/3.1;
-    border-radius:40px 40px 90px 90px / 36px 36px 110px 110px;
-    background:
-      repeating-linear-gradient(45deg, rgba(255,255,255,.014) 0 1px, rgba(0,0,0,.03) 1px 3px),
-      linear-gradient(180deg,#141416 0%, #0a0a0b 50%, #060607 100%);
-    box-shadow:
-      inset 0 30px 46px -14px #000,
-      inset 0 -3px 0 #26282b,
-      inset 0 0 0 2px #040404,
-      0 30px 80px rgba(0,0,0,.85),
-      0 0 0 1px #1c1e21;
-    perspective:1600px; overflow:hidden;
-  }
-  .cluster::before { /* 스티치 */
-    content:""; position:absolute; inset:10px; pointer-events:none;
-    border-radius:32px 32px 80px 80px / 28px 28px 100px 100px;
-    border:1.5px dashed rgba(206,170,120,.2);
-  }
-  .cluster::after { /* 상단 후드 그림자 */
-    content:""; position:absolute; left:0; right:0; top:0; height:26%;
-    border-radius:inherit; pointer-events:none; z-index:5;
-    background:linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,0));
+    position:relative; width:100%; aspect-ratio:6.8/2.65; perspective:1300px;
+    background:radial-gradient(ellipse 62% 70% at 50% 46%, #0d0d0e 0%, #070708 62%, rgba(5,5,6,0) 100%);
   }
   .dial { position:absolute; aspect-ratio:1/1; filter:drop-shadow(0 8px 14px rgba(0,0,0,.85)); }
   .dial canvas { position:absolute; inset:0; width:100%; height:100%; }
   .dial .glass {
-    position:absolute; inset:3%; border-radius:50%; pointer-events:none;
-    background:linear-gradient(155deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,0) 40%);
+    position:absolute; inset:2%; border-radius:50%; pointer-events:none;
+    background:
+      radial-gradient(ellipse 80% 38% at 32% 6%, rgba(255,255,255,.20), rgba(255,255,255,0) 70%),
+      linear-gradient(158deg, rgba(255,255,255,.09) 0%, rgba(255,255,255,0) 38%, rgba(255,255,255,0) 72%, rgba(255,190,120,.05) 100%),
+      radial-gradient(circle at 74% 88%, rgba(255,160,80,.07), rgba(255,160,80,0) 38%);
+    box-shadow:inset 0 0 26px rgba(255,255,255,.04), inset 0 -10px 30px rgba(0,0,0,.35);
   }
-  /* 실제 클러스터 위치 (타코 반지름 = 1 기준, 바깥쪽일수록 아래로 내려가고 안쪽으로 기울어짐) */
-  .d-oilt  { left:1.5%;  top:47.1%; width:19.1%; z-index:1; transform:rotateY( 24deg); }
-  .d-speed { left:17.3%; top:23.5%; width:23.6%; z-index:2; transform:rotateY( 10deg); }
-  .d-tach  { left:34.1%; top:4.8%;  width:30.3%; z-index:4; filter:drop-shadow(0 10px 16px rgba(0,0,0,.9)) drop-shadow(0 0 22px rgba(0,0,0,.8)); }
-  .d-tft   { left:59.9%; top:26.8%; width:21.8%; z-index:2; transform:rotateY(-10deg); }
-  .d-oilp  { left:80.3%; top:44.5%; width:18.2%; z-index:1; transform:rotateY(-24deg); }
+  .cover { position:absolute; left:0; top:0; width:100%; height:100%; z-index:7; pointer-events:none; mix-blend-mode:screen;
+           -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+                   mask-image:linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%); }
+  .hood { position:absolute; left:0; top:0; width:100%; height:100%; z-index:6; pointer-events:none;
+          -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+                  mask-image:linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%); }
+  .grain { position:absolute; left:0; top:0; width:100%; height:100%; z-index:7; pointer-events:none; display:none; }
+  .rim { /* 스티어링 휠 림이 위에서 드리움 */
+    position:absolute; inset:0; z-index:6; pointer-events:none; border-radius:inherit;
+    background:
+      radial-gradient(ellipse 120% 167% at 50% 170%, rgba(0,0,0,0) 0 99.4%, rgba(70,70,74,.55) 99.7%, #0b0b0c 100.1%, #070707 100%),
+      radial-gradient(ellipse 120% 172% at 50% 170%, rgba(0,0,0,0) 0 99.6%, rgba(0,0,0,.55) 100.4%, rgba(0,0,0,0) 104%);
+  }
+  .vig { position:absolute; inset:0; z-index:8; pointer-events:none; border-radius:inherit;
+         background:radial-gradient(ellipse 75% 85% at 50% 52%, rgba(0,0,0,0) 55%, rgba(0,0,0,.45) 100%); }
+  /* 실제 클러스터 위치 (타코 반지름 = 1). 바깥쪽 다이얼일수록 아래로 내려가고 더 크게 기울어짐 */
+  .d-oilt  { left:1.5%;   top:46.8%; width:17.6%; z-index:2; transform:rotateY( 10deg); }
+  .d-speed { left:14.6%;  top:27.6%; width:23.5%; z-index:3; transform:rotateY(  5deg); }
+  .d-tach  { left:35.3%;  top:3.8%;  width:29.4%; z-index:5; filter:drop-shadow(0 10px 16px rgba(0,0,0,.9)) drop-shadow(0 0 22px rgba(0,0,0,.8)); }
+  .d-tft   { left:60.9%;  top:23.8%; width:24.7%; z-index:3; transform:rotateY( -5deg); }
+  .d-oilp  { left:81.2%;  top:46.8%; width:17.6%; z-index:2; transform:rotateY(-10deg); }
 
   .spec { text-align:center; margin:18px 0 6px; letter-spacing:.18em; font-size:13px; color:#7d818a; text-transform:uppercase; }
   .spec b { color:#c9ccd2; font-weight:600; }
@@ -76,7 +75,8 @@
     box-shadow:inset 0 0 24px rgba(0,0,0,.9); font-variant-numeric:tabular-nums;
   }
   .records { display:flex; justify-content:space-between; gap:8px; margin:12px 2px 0; font-size:15px; color:#8c9099; letter-spacing:.04em; flex-wrap:wrap; }
-  .records b { color:#e7e9ee; font-weight:600; font-family:var(--mono); }
+  .records b { color:#e7e9ee; font-weight:600; font-family:var(--mono); transition:color .15s; }
+  .records b.live { color:#ffb347; text-shadow:0 0 8px rgba(255,170,60,.6); }
   .btns { display:flex; gap:12px; margin:18px 0 6px; flex-wrap:wrap; }
   button {
     flex:1 1 120px; padding:15px 10px; font:600 19px var(--font); letter-spacing:.1em; cursor:pointer;
@@ -96,7 +96,7 @@
   li span:last-child  { text-align:right; color:#9aa0ab; }
   .hint { text-align:center; color:#5d6168; font-size:13px; margin-top:12px; letter-spacing:.06em; }
 
-  @media (max-width:760px) { body { padding:12px 6px 30px; } .cluster { border-radius:20px 20px 40px 40px / 18px 18px 50px 50px; } .cluster::before { inset:5px; } }
+  @media (max-width:760px) { body { padding:12px 6px 30px; } }
 </style>
 </head>
 <body>
@@ -107,6 +107,40 @@
     <div class="dial d-tach"  id="d-tach"><canvas class="face"></canvas><canvas class="needle"></canvas><div class="glass"></div></div>
     <div class="dial d-tft"   id="d-tft"><canvas class="face"></canvas><canvas class="needle"></canvas><div class="glass"></div></div>
     <div class="dial d-oilp"  id="d-oilp"><canvas class="face"></canvas><canvas class="needle"></canvas><div class="glass"></div></div>
+    <canvas class="grain" id="grain" width="256" height="256"></canvas>
+    <svg class="cover" viewBox="0 0 680 265" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <filter id="dust" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="3.2" numOctaves="1" seed="9"/>
+          <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 9 -7.6"/>
+        </filter>
+        <linearGradient id="refl" x1="0" y1="0" x2="1" y2=".35">
+          <stop offset=".18" stop-color="#fff" stop-opacity="0"/><stop offset=".3" stop-color="#fff" stop-opacity=".035"/>
+          <stop offset=".34" stop-color="#fff" stop-opacity=".075"/><stop offset=".4" stop-color="#fff" stop-opacity=".02"/>
+          <stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset=".8" stop-color="#cfe0ff" stop-opacity=".025"/><stop offset="1" stop-color="#cfe0ff" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <rect width="680" height="265" fill="url(#refl)"/>
+      <rect width="680" height="265" filter="url(#dust)" opacity=".18"/>
+    </svg>
+    <svg class="hood" viewBox="0 0 680 265" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#040405"/><stop offset=".6" stop-color="#09090a"/><stop offset="1" stop-color="#0f0f11"/></linearGradient>
+        <linearGradient id="topfade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset=".3" stop-color="#000" stop-opacity=".18"/><stop offset=".55" stop-color="#000" stop-opacity="0"/></linearGradient>
+        <radialGradient id="sheen" cx=".22" cy=".05" r=".6"><stop offset="0" stop-color="#fff" stop-opacity=".09"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+        <filter id="soft" x="-10%" y="-40%" width="120%" height="180%"><feGaussianBlur stdDeviation="10"/></filter>
+        <filter id="soft1"><feGaussianBlur stdDeviation="1.4"/></filter>
+        <filter id="alc"><feTurbulence type="fractalNoise" baseFrequency="1.7" numOctaves="2" seed="4"/><feColorMatrix type="matrix" values="0 0 0 0 .62  0 0 0 0 .62  0 0 0 0 .62  0 0 0 1.1 -.1"/></filter>
+        <clipPath id="hc"><path d="M0 0H680V118A340 130 0 0 0 0 118Z"/></clipPath>
+      </defs>
+      <rect width="680" height="265" fill="url(#topfade)"/>
+      <path d="M0 118A340 130 0 0 1 680 118" fill="none" stroke="#000" stroke-opacity=".85" stroke-width="34" filter="url(#soft)" transform="translate(0 14)"/>
+      <path d="M0 0H680V118A340 130 0 0 0 0 118Z" fill="url(#hg)"/>
+      <rect width="680" height="130" filter="url(#alc)" opacity=".16" clip-path="url(#hc)" style="mix-blend-mode:overlay"/>
+      <rect width="680" height="130" fill="url(#sheen)" clip-path="url(#hc)"/>
+      <path d="M0 118A340 130 0 0 1 680 118" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="1.4" filter="url(#soft1)" transform="translate(0 1.5)"/>
+      <path d="M0 118A340 130 0 0 1 680 118" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="2.4" filter="url(#soft1)"/>
+    </svg>
   </div>
 
   <div class="spec"><b>911 GT3</b> · 991.1 · 3.8L 박서 · 475 PS · 7단 PDK · 레드존 9,000 rpm</div>
@@ -234,106 +268,152 @@ function txt(c, s, x, y, size, o = {}) {
   c.restore();
 }
 
-// ===== 991.1 GT3 실사 기준 =====
-// 좌표는 모두 각 다이얼의 "터널 반지름(R)"을 1로 한 값. 주황 백라이트 눈금 + 흰색 와이드 숫자 + 깊은 터널
-const ORG = '#ffa826', RED = '#ff4a2a';
-const NUM = '"Montserrat","Barlow Condensed","Arial",sans-serif';
+// ===== 991.1 GT3 정면 사진(GT3 RS 포함) 실측 기준 =====
+// 좌표는 모두 "터널(림) 반지름 R = 1" 단위. 문자판은 터널 안쪽 깊이 들어가 있어 중심이 (ox,oy)만큼 쏠린다 (시차).
+const TICKC = '#ececef', AMBER = '#ffa826';
+const NUM = '"Saira","Barlow","Arial",sans-serif';     // 실차 계기 숫자(둥근 사각형 계열)에 가장 가까운 폰트, 폭 112%
+const NUMSC = '"Saira","Barlow Semi Condensed","Arial",sans-serif';   // 속도계·작은 계기의 좁은 숫자
 const D2R = Math.PI / 180;
+// 다이얼별 문자판 반지름 비율(F)과 중심 쏠림(ox, oy)
+// F: 문자판 반지름(터널 대비). 콘텐츠 좌표는 기존(FOLD) 기준이라 F/FOLD 만큼 확대해서 원을 빈틈없이 채운다.
+const FOLD = { tach: .82, speed: .8, tft: .85, oilt: .84, oilp: .84 };
+const FC = {
+  tach:  { F: .82, ox: 0,    oy: .02, fc: ['#1a1a1c', '#0e0e0f', '#050505'] },
+  speed: { F: .8,  ox: .3,   oy: 0,   fc: ['#131314', '#0a0a0b', '#040404'] },
+  tft:   { F: .85, ox: -.07, oy: .07, fc: ['#0a0a0b', '#060606', '#020202'] },
+  oilt:  { F: .84, ox: 0,    oy: 0,   fc: ['#131314', '#0a0a0b', '#040404'] },
+  oilp:  { F: .84, ox: 0,    oy: 0,   fc: ['#131314', '#0a0a0b', '#040404'] }
+};
+const KS = n => FC[n].F / FOLD[n];
 
 function txt(c, s, x, y, size, o = {}) {
   c.save();
-  const fam = o.mono ? MONO : (o.num ? NUM : FONT);
+  const fam = o.mono ? MONO : (o.sc ? NUMSC : (o.num ? NUM : FONT));
   c.font = `${o.style || ''} ${o.weight || 600} ${size}px ${fam}`;
   c.fillStyle = o.color || '#f2f2f2';
   c.textAlign = o.align || 'center'; c.textBaseline = 'middle';
+  if ((o.num || o.sc) && 'fontStretch' in c) c.fontStretch = o.sc ? 'normal' : 'semi-expanded';
   if (o.ls && 'letterSpacing' in c) c.letterSpacing = o.ls + 'px';
-  if (o.glow) { c.shadowColor = o.glow; c.shadowBlur = size * 0.45; }
+  if (o.glow) { c.shadowColor = o.glow; c.shadowBlur = size * 0.4; }
   c.fillText(s, x, y);
   c.restore();
 }
 
-// 터널(깔때기) + 백라이트 빛줄기 + 어두운 문자판
-function baseFace(c, S, F) {
-  const R = S / 2, Rf = R * F;
+// 검은 매트 터널(림 중심) + 쏠린 문자판. 문자판 중심으로 translate 된 상태로 끝난다 (restore 로 복귀).
+function baseFace(c, S, name) {
+  const { F, ox, oy, fc } = FC[name], R = S / 2, Rf = R * F, fx = ox * R, fy = oy * R;
   c.clearRect(0, 0, S, S); c.save(); c.translate(R, R);
-  c.fillStyle = '#080808'; c.beginPath(); c.arc(0, 0, R, 0, TAU); c.fill();
-  c.strokeStyle = 'rgba(140,142,148,.35)'; c.lineWidth = R * .012;
-  c.beginPath(); c.arc(0, 0, R * .985, Math.PI * 1.02, Math.PI * 1.98); c.stroke();
-  // 깔때기 벽 (따뜻한 주황 백라이트)
-  let g = c.createRadialGradient(0, 0, Rf, 0, 0, R * .96);
-  g.addColorStop(0, '#0f0905'); g.addColorStop(.35, '#3d2512'); g.addColorStop(.75, '#2c190b'); g.addColorStop(1, '#0a0604');
-  c.fillStyle = g; c.beginPath(); c.arc(0, 0, R * .96, 0, TAU); c.fill();
-  c.save(); c.beginPath(); c.arc(0, 0, R * .96, 0, TAU); c.arc(0, 0, Rf, 0, TAU, true); c.clip('evenodd');
-  g = c.createLinearGradient(-R, -R, R, R);
-  g.addColorStop(0, 'rgba(255,170,80,.30)'); g.addColorStop(.5, 'rgba(255,150,60,.06)'); g.addColorStop(1, 'rgba(255,150,60,.16)');
-  c.fillStyle = g; c.fillRect(-R, -R, 2 * R, 2 * R);
-  for (let i = 0; i < 220; i++) {                      // 도광 링의 빛줄기
-    const a = i / 220 * TAU, al = .05 + .16 * Math.abs(Math.sin(i * 12.9898) * Math.cos(i * 4.1));
-    c.strokeStyle = `rgba(255,176,96,${al})`; c.lineWidth = R * .006;
-    c.beginPath(); c.moveTo(Math.cos(a) * Rf * 1.01, Math.sin(a) * Rf * 1.01); c.lineTo(Math.cos(a) * R * .94, Math.sin(a) * R * .94); c.stroke();
+  c.beginPath(); c.arc(0, 0, R * .99, 0, TAU); c.clip();
+  c.fillStyle = '#040404'; c.beginPath(); c.arc(0, 0, R, 0, TAU); c.fill();
+  // 터널 벽: 문자판 쪽은 어둡고 림 쪽으로 갈수록 밝아진다 (쏠린 만큼 한쪽이 두껍게 보임)
+  let g = c.createRadialGradient(fx, fy, Rf, fx, fy, R * 1.25);
+  g.addColorStop(0, '#020202'); g.addColorStop(.5, '#080809'); g.addColorStop(1, '#131315');
+  c.fillStyle = g; c.beginPath(); c.arc(0, 0, R * .965, 0, TAU); c.fill();
+  // 벽에 맺히는 주변광 반사 (위/왼쪽)
+  c.save(); c.beginPath(); c.arc(0, 0, R * .965, 0, TAU); c.clip();
+  g = c.createLinearGradient(-R, -R, R * .6, R * .8);
+  g.addColorStop(0, 'rgba(235,240,248,.13)'); g.addColorStop(.3, 'rgba(210,216,226,.04)'); g.addColorStop(.6, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  c.fillStyle = g; c.fillRect(-R, -R, 2 * R, 2 * R); c.restore();
+  // 백라이트 번짐: 눈금 링의 빛이 터널 안쪽 벽에 비친다 (TFT 제외)
+  if (name !== 'tft') {
+    c.save(); c.beginPath(); c.arc(0, 0, R * .965, 0, TAU); c.arc(fx, fy, Rf, 0, TAU, true); c.clip('evenodd');
+    g = c.createRadialGradient(fx, fy - Rf * .45, Rf * .7, fx, fy - Rf * .45, Rf * 1.25);
+    g.addColorStop(0, 'rgba(255,165,60,.26)'); g.addColorStop(.4, 'rgba(255,140,40,.08)'); g.addColorStop(1, 'rgba(255,140,40,0)');
+    c.fillStyle = g; c.fillRect(-R, -R, 2 * R, 2 * R);
+    c.restore();
   }
-  c.restore();
+  // 림의 얇은 은색 라인
+  g = c.createLinearGradient(-R, -R, R, R);
+  g.addColorStop(0, '#8e9196'); g.addColorStop(.3, '#3a3c40'); g.addColorStop(.6, '#141416'); g.addColorStop(.85, '#26282b'); g.addColorStop(1, '#45474b');
+  c.strokeStyle = g; c.lineWidth = R * .014; c.beginPath(); c.arc(0, 0, R * .985, 0, TAU); c.stroke();
   // 문자판
+  c.save(); c.translate(fx, fy);
   g = c.createRadialGradient(-Rf * .2, -Rf * .3, Rf * .05, 0, 0, Rf);
-  g.addColorStop(0, '#171717'); g.addColorStop(.7, '#0b0b0b'); g.addColorStop(1, '#040404');
+  g.addColorStop(0, fc[0]); g.addColorStop(.7, fc[1]); g.addColorStop(1, fc[2]);
   c.fillStyle = g; c.beginPath(); c.arc(0, 0, Rf, 0, TAU); c.fill();
-  c.strokeStyle = 'rgba(255,150,60,.25)'; c.lineWidth = R * .008; c.beginPath(); c.arc(0, 0, Rf, 0, TAU); c.stroke();
+  c.save(); c.beginPath(); c.arc(0, 0, Rf, 0, TAU); c.clip();
+  g = c.createRadialGradient(0, Rf * .12, Rf * .78, 0, Rf * .12, Rf * 1.12);
+  g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.7)');
+  c.fillStyle = g; c.fillRect(-Rf, -Rf, Rf * 2, Rf * 2); c.restore();
   // 후드 그림자
   c.save(); c.beginPath(); c.arc(0, 0, Rf, 0, TAU); c.clip();
   g = c.createLinearGradient(0, -Rf, 0, Rf * .4);
-  g.addColorStop(0, 'rgba(0,0,0,.55)'); g.addColorStop(.5, 'rgba(0,0,0,.1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  g.addColorStop(0, 'rgba(0,0,0,.5)'); g.addColorStop(.5, 'rgba(0,0,0,.08)'); g.addColorStop(1, 'rgba(0,0,0,0)');
   c.fillStyle = g; c.fillRect(-Rf, -Rf, Rf * 2, Rf * 2); c.restore();
-  c.restore();
+  // 이후 콘텐츠를 위해 문자판 중심 좌표계를 유지 (호출 측에서 R 단위로 그린다)
+  const K = KS(name); c.scale(K, K);
+}
+// baseFace 후 호출: save 2번 중 안쪽/바깥쪽 복귀
+function endFace(c) { c.restore(); c.restore(); }
+// 바늘 캔버스에서도 같은 중심을 쓴다
+function beginNeedle(c, S, name) {
+  const { ox, oy } = FC[name], R = S / 2;
+  c.clearRect(0, 0, S, S); c.save(); c.translate(R + ox * R, R + oy * R);
+  c.beginPath(); c.arc(-ox * R, -oy * R, R * .99, 0, TAU); c.clip();
+  const K = KS(name); c.scale(K, K);
+  return R;
 }
 
 function scale(c, R, o) {
   const st = o.start, sw = o.sweep, tr = o.tr;
   const f = v => st + sw * (v - o.min) / (o.max - o.min);
   const inRed = v => (o.reds || []).some(r => v >= r[0] - 1e-6 && v <= r[1] + 1e-6);
-  const L = o.L || [.075, .05, .03], W = o.W || [.022, .016, .012];
-  (o.reds || []).forEach(r => {                        // 레드존: 두껍게 빛나는 주황-적색 띠
-    c.save(); c.lineWidth = R * (o.redW || .075);
-    const g = c.createLinearGradient(0, -R, 0, R); g.addColorStop(0, '#ff7a2a'); g.addColorStop(1, '#e2381a');
-    c.strokeStyle = g; c.shadowColor = 'rgba(255,90,40,.8)'; c.shadowBlur = R * .05;
-    c.beginPath(); c.arc(0, 0, R * (tr - .04), f(r[0]), f(r[1]), sw < 0); c.stroke(); c.restore();
+  const L = o.L || [.075, .05, .03], W = o.W || [.014, .01, .007];
+  (o.reds || []).forEach(r => {                        // 레드존: 눈금 바깥쪽 두꺼운 주황 띠
+    c.save(); c.lineWidth = R * (o.redW || .05); c.strokeStyle = '#ff5a14'; c.shadowColor = 'rgba(255,90,20,.6)'; c.shadowBlur = R * .02;
+    c.beginPath(); c.arc(0, 0, R * (tr + .015), f(r[0]), f(r[1]), sw < 0); c.stroke(); c.restore();
   });
   const N = Math.round((o.max - o.min) / o.minor);
   const isMul = (v, m) => m && Math.abs((v - o.min) / m - Math.round((v - o.min) / m)) < 1e-6;
   for (let i = 0; i <= N; i++) {
     const v = o.min + i * o.minor, maj = isMul(v, o.major), mid = isMul(v, o.mid);
-    if (o.skipRed && inRed(v) && !maj) continue;
     const k = maj ? 0 : mid ? 1 : 2;
-    c.save(); c.rotate(f(v)); c.strokeStyle = inRed(v) ? '#ffd0b8' : ORG;
-    c.shadowColor = 'rgba(255,150,30,.7)'; c.shadowBlur = R * .012;
+    c.save(); c.rotate(f(v));
+    c.strokeStyle = inRed(v) ? '#ffd2a0' : (maj && o.tcMaj ? o.tcMaj : (o.tc || TICKC));
     c.lineWidth = W[k] * R; c.beginPath(); c.moveTo(tr * R, 0); c.lineTo((tr - L[k]) * R, 0); c.stroke(); c.restore();
   }
+  const rLim = (tr - L[0] - (o.gap ?? .03)) * R, size = o.ls * R;
   (o.labels || []).forEach(v => {
-    const a = f(v), r = o.lr * R;
-    txt(c, o.fmt ? o.fmt(v) : String(v), Math.cos(a) * r, Math.sin(a) * r, o.ls * R,
-        { color: '#f6f6f6', weight: 700, num: true });
+    const a = f(v), str = o.fmt ? o.fmt(v) : String(v);
+    c.save(); c.font = `${o.lw || 600} ${size}px ${o.sc ? NUMSC : NUM}`;
+    if ('fontStretch' in c) c.fontStretch = o.sc ? 'normal' : 'semi-expanded';
+    const w = c.measureText(str).width; c.restore();
+    const h = size * .74;                                  // 숫자 높이(대문자 높이)
+    const e = Math.abs(Math.cos(a)) * w / 2 + Math.abs(Math.sin(a)) * h / 2;
+    const r = Math.min(o.lr * R, rLim - e);
+    txt(c, str, Math.cos(a) * r, Math.sin(a) * r, size,
+        { color: '#f4f4f4', weight: o.lw || 600, num: true, sc: o.sc });
   });
 }
+function bloom(c, S, amt = .18, blur = .01) {
+  const t = document.createElement('canvas'); t.width = t.height = S;
+  const x = t.getContext('2d'); x.filter = `blur(${S * blur}px)`; x.drawImage(c.canvas, 0, 0);
+  c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = amt; c.drawImage(t, 0, 0); c.restore();
+}
+function makeGrain() {}
 function rng(a, b, n) { const r = []; for (let v = a; v <= b + 1e-9; v += n) r.push(v); return r; }
 
-/* ----- 7세그먼트 숫자 (LCD) ----- */
+/* ----- 7세그먼트 숫자 ----- */
 const SEG = { 0: 'abcdef', 1: 'bc', 2: 'abdeg', 3: 'abcdg', 4: 'bcfg', 5: 'acdfg', 6: 'acdefg', 7: 'abc', 8: 'abcdefg', 9: 'abcdfg' };
 function seg7(c, str, x, y, h, color, align = 'left') {
-  const w = h * .56, t = h * .14, gap = h * .22;
+  const w = h * .56, t = h * .15, gap = h * .22;
   let total = -gap; for (const ch of str) total += (ch === '.' ? t * 2 : w + gap);
   let cx = align === 'right' ? x - total : align === 'center' ? x - total / 2 : x;
-  c.save(); c.fillStyle = color; c.shadowColor = color; c.shadowBlur = h * .3;
+  c.save(); c.fillStyle = color; c.shadowColor = color; c.shadowBlur = h * .15;
   const hz = (xx, yy) => { c.beginPath(); c.roundRect(xx + t * .5, yy, w - t, t, t * .35); c.fill(); };
   const vt = (xx, yy) => { c.beginPath(); c.roundRect(xx, yy, t, h / 2 - t * .8, t * .35); c.fill(); };
+  const SEGS = { a: [hz, 0, 0], g: [hz, 0, 1], d: [hz, 0, 2], f: [vt, 0, 3], b: [vt, 1, 3], e: [vt, 0, 4], c: [vt, 1, 4] };
   for (const ch of str) {
     if (ch === '.') { c.fillRect(cx + t * .3, y + h / 2 - t, t, t); cx += t * 2; continue; }
     const s = SEG[ch] || '', x0 = cx, y0 = y - h / 2;
-    if (s.includes('a')) hz(x0, y0);
-    if (s.includes('g')) hz(x0, y0 + h / 2 - t / 2);
-    if (s.includes('d')) hz(x0, y0 + h - t);
-    if (s.includes('f')) vt(x0, y0 + t * .6);
-    if (s.includes('b')) vt(x0 + w - t, y0 + t * .6);
-    if (s.includes('e')) vt(x0, y0 + h / 2 + t * .2);
-    if (s.includes('c')) vt(x0 + w - t, y0 + h / 2 + t * .2);
+    for (const k in SEGS) {
+      const [fn, right, pos] = SEGS[k], lit = s.includes(k);
+      const xx = x0 + (right ? w - t : 0);
+      const yy = pos === 0 ? y0 : pos === 1 ? y0 + h / 2 - t / 2 : pos === 2 ? y0 + h - t : pos === 3 ? y0 + t * .6 : y0 + h / 2 + t * .2;
+      c.globalAlpha = lit ? 1 : .03; c.shadowBlur = lit ? h * .15 : 0;
+      fn(xx, yy);
+    }
+    c.globalAlpha = 1;
     cx += w + gap;
   }
   c.restore();
@@ -344,6 +424,9 @@ function ico(c, R, k, x, y, s, col, a) {
   x *= R; y *= R; s *= R;
   c.save(); c.globalAlpha = a; c.strokeStyle = c.fillStyle = col; c.lineWidth = s * .11; c.lineJoin = 'round'; c.lineCap = 'round';
   if (a > .5) { c.shadowColor = col; c.shadowBlur = s * .5; }
+  const circ = (t) => { c.beginPath(); c.arc(x, y, s * .38, 0, TAU); c.stroke();
+    c.font = `700 ${s * .5}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle';
+    if ('letterSpacing' in c) c.letterSpacing = '0px'; c.fillText(t, x, y + s * .02); };
   if (k === 'arrL' || k === 'arrR') {
     const d = k === 'arrL' ? -1 : 1;
     c.beginPath(); c.moveTo(x + d * s * .5, y); c.lineTo(x - d * s * .1, y - s * .42); c.lineTo(x - d * s * .1, y - s * .16);
@@ -352,13 +435,29 @@ function ico(c, R, k, x, y, s, col, a) {
   } else if (k === 'head') {
     c.beginPath(); c.arc(x + s * .1, y, s * .34, -Math.PI / 2, Math.PI / 2); c.closePath(); c.fill();
     for (let i = -1; i <= 1; i++) { c.beginPath(); c.moveTo(x - s * .12, y + i * s * .22); c.lineTo(x - s * .5, y + i * s * .26); c.stroke(); }
+  } else if (k === 'fog') {
+    c.beginPath(); c.arc(x + s * .12, y, s * .3, -Math.PI / 2, Math.PI / 2); c.closePath(); c.stroke();
+    for (let i = -1; i <= 1; i++) { c.beginPath(); c.moveTo(x - s * .12, y + i * s * .2); c.lineTo(x - s * .5, y + i * s * .2 + s * .04); c.stroke(); }
+  } else if (k === 'airbag') {
+    c.beginPath(); c.arc(x - s * .2, y - s * .28, s * .1, 0, TAU); c.fill();
+    c.beginPath(); c.moveTo(x - s * .22, y - s * .12); c.lineTo(x - s * .1, y + s * .15); c.lineTo(x + s * .05, y + s * .38); c.stroke();
+    c.beginPath(); c.arc(x + s * .18, y - s * .05, s * .18, 0, TAU); c.stroke();
   } else if (k === 'belt') {
     c.beginPath(); c.arc(x, y - s * .3, s * .13, 0, TAU); c.fill();
     c.beginPath(); c.moveTo(x - s * .22, y - s * .1); c.lineTo(x + s * .12, y - s * .1); c.lineTo(x + s * .2, y + s * .36); c.lineTo(x - s * .16, y + s * .36); c.closePath(); c.fill();
-    c.beginPath(); c.moveTo(x - s * .24, y - s * .14); c.lineTo(x + s * .2, y + s * .3); c.stroke();
-  } else if (k === 'park') {
-    c.beginPath(); c.arc(x, y, s * .34, 0, TAU); c.stroke();
-    c.font = `700 ${s * .5}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('P', x, y + s * .02);
+  } else if (k === 'park') { circ('P'); }
+  else if (k === 'brk') { circ('!'); }
+  else if (k === 'abs') { circ('ABS'); }
+  else if (k === 'engine') {
+    c.beginPath(); c.roundRect(x - s * .3, y - s * .2, s * .6, s * .4, s * .06); c.stroke();
+    c.beginPath(); c.moveTo(x - s * .1, y - s * .2); c.lineTo(x - s * .1, y - s * .32); c.lineTo(x + s * .12, y - s * .32); c.stroke();
+    c.beginPath(); c.moveTo(x - s * .3, y); c.lineTo(x - s * .45, y); c.moveTo(x + s * .3, y); c.lineTo(x + s * .45, y); c.stroke();
+  } else if (k === 'tire') {
+    c.beginPath(); c.arc(x, y, s * .34, Math.PI * .85, Math.PI * .15 + TAU); c.stroke();
+    c.font = `700 ${s * .5}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('!', x, y + s * .02);
+  } else if (k === 'esc') {
+    c.beginPath(); c.moveTo(x - s * .3, y + s * .3); c.lineTo(x, y - s * .3); c.lineTo(x + s * .3, y + s * .3); c.stroke();
+    c.beginPath(); c.arc(x, y + s * .32, s * .08, 0, TAU); c.fill();
   } else if (k === 'oil') {
     c.beginPath(); c.roundRect(x - s * .3, y - s * .12, s * .46, s * .3, s * .05); c.stroke();
     c.beginPath(); c.moveTo(x + s * .16, y - s * .02); c.lineTo(x + s * .42, y - s * .22); c.stroke();
@@ -366,11 +465,12 @@ function ico(c, R, k, x, y, s, col, a) {
   } else if (k === 'therm') {
     c.beginPath(); c.moveTo(x, y - s * .38); c.lineTo(x, y + s * .12); c.stroke();
     c.beginPath(); c.arc(x, y + s * .22, s * .13, 0, TAU); c.fill();
-    c.beginPath(); c.moveTo(x + s * .22, y - s * .2); c.lineTo(x + s * .42, y - s * .2); c.moveTo(x + s * .22, y - s * .02); c.lineTo(x + s * .42, y - s * .02); c.stroke();
   } else if (k === 'pump') {
     c.beginPath(); c.roundRect(x - s * .28, y - s * .34, s * .4, s * .68, s * .05); c.stroke();
     c.beginPath(); c.moveTo(x + s * .12, y - s * .14); c.lineTo(x + s * .32, y - s * .14); c.lineTo(x + s * .32, y + s * .2); c.stroke();
-    c.beginPath(); c.moveTo(x - s * .2, y - s * .24); c.lineTo(x + s * .04, y - s * .24); c.stroke();
+  } else if (k === 'batt') {
+    c.beginPath(); c.roundRect(x - s * .34, y - s * .2, s * .68, s * .4, s * .05); c.stroke();
+    c.beginPath(); c.moveTo(x - s * .18, y - s * .2); c.lineTo(x - s * .18, y - s * .3); c.moveTo(x + s * .18, y - s * .2); c.lineTo(x + s * .18, y - s * .3); c.stroke();
   } else {                                           // 문자 표시등
     c.font = `600 ${s * .5}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle';
     if ('letterSpacing' in c) c.letterSpacing = s * .05 + 'px';
@@ -378,143 +478,209 @@ function ico(c, R, k, x, y, s, col, a) {
   }
   c.restore();
 }
+// 타코 경고 표시 (991.1 정면 사진 실측, 터널 R=1, 허브 기준). 평소엔 어둡고 시동 시 점등.
 const TACH_ICONS = [
-  { k: 'BRAKE', x: -.37, y: -.3,  s: .13, col: '#ff3b30', lit: s => s.sweep || s.brake },
-  { k: 'belt',  x: -.47, y: -.11, s: .15, col: '#ff3b30', lit: s => s.sweep || s.belt },
-  { k: 'ABS',   x: .37,  y: -.3,  s: .11, col: '#ffae2a', lit: s => s.sweep },
-  { k: 'park',  x: -.36, y: .12,  s: .13, col: '#ff3b30', lit: s => s.sweep || s.park },
-  { k: 'arrL',  x: -.22, y: -.5,  s: .1,  col: '#31d27a', lit: s => s.sweep },
-  { k: 'arrR',  x: .22,  y: -.5,  s: .1,  col: '#31d27a', lit: s => s.sweep }
+  { k: 'arrL',  x: -.2,  y: -.41, s: .1,  col: '#31d27a', lit: s => s.sweep },
+  { k: 'head',  x: 0,    y: -.45, s: .11, col: '#31d27a', lit: s => s.sweep },
+  { k: 'arrR',  x: .2,   y: -.41, s: .1,  col: '#31d27a', lit: s => s.sweep },
+  { k: 'BRAKE', x: -.33, y: -.27, s: .14, col: '#ff3b30', lit: s => s.sweep || s.brake },
+  { k: 'airbag',x: -.22, y: .03,  s: .13, col: '#ff3b30', lit: s => s.sweep },
+  { k: 'belt',  x: -.42, y: -.1,  s: .13, col: '#ff3b30', lit: s => s.sweep || s.belt },
+  { k: 'engine',x: -.44, y: .08,  s: .13, col: '#ff9a1a', lit: s => s.sweep },
+  { k: 'park',  x: -.36, y: .27,  s: .12, col: '#ff9a1a', lit: s => s.sweep || s.park },
+  { k: 'ABS',   x: .35,  y: -.27, s: .14, col: '#ff9a1a', lit: s => s.sweep },
+  { k: 'esc',   x: .44,  y: -.13, s: .12, col: '#ff9a1a', lit: s => s.sweep },
+  { k: 'esc',   x: .45,  y: .07,  s: .11, col: '#ff9a1a', lit: s => s.sweep },
+  { k: 'OFF',   x: .45,  y: .15,  s: .08, col: '#ff9a1a', lit: s => s.sweep }
 ];
 const GEARCOL = ['P', 'R', 'N', 'D'];
+const CYAN = '#8fd8ff';
 
-/* ----- 다이얼별 정적 면 ----- */
+/* ----- 정적 면 ----- */
 function faceTach() {
-  const { f: c, S, R } = D.tach; baseFace(c, S, .88); c.save(); c.translate(R, R);
-  scale(c, R, { min: 0, max: 10000, major: 1000, minor: 200, start: A0, sweep: SW, tr: .855,
-                labels: rng(0, 10000, 1000), fmt: v => v / 1000, lr: .66, ls: .165,
-                reds: [[9000, 10000]], redW: .085, skipRed: true, L: [.1, .06, .045] });
-  txt(c, 'GT3', 0, -.24 * R, .14 * R, { style: 'italic', weight: 800, num: true, color: '#f7e6e6', glow: 'rgba(255,110,110,.55)' });
-  TACH_ICONS.forEach(i => ico(c, R, i.k, i.x, i.y, i.s, '#8a8f97', .16));
-  // PRNDM
-  c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = R * .006;
-  c.beginPath(); c.moveTo(.155 * R, .2 * R); c.lineTo(.155 * R, .5 * R); c.stroke();
-  GEARCOL.forEach((g, i) => txt(c, g, .21 * R, (.22 + i * .08) * R, .06 * R, { color: '#e9e9e9', weight: 700, num: true }));
-  txt(c, 'M', .07 * R, .46 * R, .06 * R, { color: '#e9e9e9', weight: 700, num: true });
-  txt(c, '–', .07 * R, .38 * R, .05 * R, { color: '#e9e9e9', weight: 700 });
-  txt(c, '+', .07 * R, .53 * R, .05 * R, { color: '#e9e9e9', weight: 700 });
-  c.restore();
+  const { f: c, S, R } = D.tach; baseFace(c, S, 'tach');
+  scale(c, R, { min: 0, max: 10000, major: 1000, minor: 200, start: A0, sweep: SW, tr: .79,
+                labels: rng(0, 10000, 1000), fmt: v => v / 1000, lr: .645, ls: .16,
+                reds: [[9000, 10000]], redW: .06, L: [.07, .07, .042], W: [.018, .018, .011], lw: 600,
+                tc: '#f2bf1c', tcMaj: '#f6f6f6' });
+  txt(c, 'GT3', 0, -.26 * R, .125 * R, { style: 'italic', weight: 700, num: true, color: '#eeeef2' });
+  TACH_ICONS.forEach(i => ico(c, R, i.k, i.x, i.y, i.s, '#8a8f97', .2));
+  // PRND M 열
+  c.strokeStyle = 'rgba(255,255,255,.5)'; c.lineWidth = R * .005;
+  c.beginPath(); c.moveTo(.13 * R, .17 * R); c.lineTo(.13 * R, .47 * R); c.stroke();
+  GEARCOL.forEach((g, i) => txt(c, g, .18 * R, (.2 + i * .075) * R, .05 * R, { color: '#d8d8dc', weight: 600, num: true, sc: true }));
+  txt(c, 'M', .075 * R, .44 * R, .05 * R, { color: '#d8d8dc', weight: 600, num: true, sc: true });
+  // 기어 숫자 박스
+  c.beginPath(); c.roundRect(-.065 * R, .17 * R, .13 * R, .18 * R, .02 * R); c.fillStyle = '#0c0c0e'; c.fill();
+  c.strokeStyle = 'rgba(255,255,255,.14)'; c.lineWidth = R * .005; c.stroke();
+  // 하단 디지털 속도 창
+  c.beginPath(); c.roundRect(-.475 * R, .55 * R, .95 * R, .18 * R, .09 * R); c.fillStyle = '#0b0c0e'; c.fill();
+  c.strokeStyle = 'rgba(255,255,255,.1)'; c.lineWidth = R * .005; c.stroke();
+  endFace(c); bloom(c, S);
 }
-const SP = { start: 139 * D2R, sweep: 160 * D2R, max: 360 };
+const SP = { start: 136 * D2R, sweep: 167 * D2R, max: 360 };
 function faceSpeed() {
-  const { f: c, S, R } = D.speed; baseFace(c, S, .86); c.save(); c.translate(R, R);
-  scale(c, R, { min: 0, max: SP.max, major: 40, minor: 10, start: SP.start, sweep: SP.sweep, tr: .86,
-                labels: rng(0, 360, 40), lr: .64, ls: .1, L: [.09, .055, .04] });
-  txt(c, 'km/h', 0, -.5 * R, .05 * R, { color: '#e9e9e9', weight: 700, num: true, ls: 1 });
-  c.restore();
+  const { f: c, S, R } = D.speed; baseFace(c, S, 'speed');
+  scale(c, R, { min: 0, max: SP.max, major: 50, mid: 25, minor: 10, start: SP.start, sweep: SP.sweep, tr: .7,
+                labels: rng(0, 350, 50), lr: .585, ls: .1, sc: true,
+                L: [.075, .06, .035], W: [.016, .013, .009], lw: 600, tc: '#f2bf1c' });
+  txt(c, 'km/h', .1 * R, -.36 * R, .042 * R, { color: '#d4d4d8', weight: 600, num: true, sc: true, ls: 1 });
+  txt(c, 'HOLD', -.22 * R, -.24 * R, .06 * R, { color: '#2f7a4c', weight: 700, num: true, sc: true });
+  txt(c, 'TC', .34 * R, -.12 * R, .055 * R, { color: '#7a7a80', weight: 700, num: true, sc: true });
+  txt(c, 'OFF', .34 * R, -.04 * R, .055 * R, { color: '#7a7a80', weight: 700, num: true, sc: true });
+  ico(c, R, 'tire', 0, -.32, .14, '#8a8f97', .22);
+  ico(c, R, 'fog', .21, -.27, .12, '#8a8f97', .22);
+  ico(c, R, 'head', .05, .3, .12, '#8a8f97', .22);
+  ico(c, R, 'fog', .47, .3, .12, '#8a8f97', .22);
+  c.beginPath(); c.roundRect(-.5 * R, .51 * R, 1.0 * R, .2 * R, .1 * R); c.fillStyle = '#0d0d0f'; c.fill();
+  c.strokeStyle = 'rgba(255,255,255,.1)'; c.lineWidth = R * .005; c.stroke();
+  endFace(c); bloom(c, S);
 }
 function faceTFT() {
-  const { f: c, S, R } = D.tft; baseFace(c, S, .9); c.save(); c.translate(R, R);
-  c.beginPath(); c.roundRect(-.76 * R, -.84 * R, 1.52 * R, 1.62 * R, .38 * R);
-  c.fillStyle = '#2a2b2e'; c.fill();
-  c.beginPath(); c.roundRect(-.745 * R, -.825 * R, 1.49 * R, 1.59 * R, .37 * R);
-  c.fillStyle = '#050607'; c.fill();
-  c.restore();
+  const { f: c, S, R } = D.tft; baseFace(c, S, 'tft');
+  const Rs = R * FC.tft.F * .96;
+  c.beginPath(); c.arc(0, 0, Rs * 1.02, 0, TAU); c.fillStyle = '#16171a'; c.fill();
+  endFace(c);
 }
+// 이중 계기: 위/아래 각각 따로 바늘 축을 가진 호 눈금 (정면 사진 실측)
 const DUAL = {
-  oilt: { up: { start: 207 * D2R, sweep: 60 * D2R, min: 60, max: 150 }, lo: { start: 150 * D2R, sweep: -120 * D2R, min: 0, max: 5 } },
-  oilp: { up: { start: 333 * D2R, sweep: -60 * D2R, min: 50, max: 130 }, lo: { start: 150 * D2R, sweep: -120 * D2R, min: 0, max: 1 } }
+  oilt: {
+    U: { px: .16,  py: -.24, start: 170 * D2R, sweep: 105 * D2R, min: 60, max: 150, tr: .52, lr: .37, labels: [60, 90, 120, 150] },
+    L: { px: .37,  py: .25,  start: 158 * D2R, sweep: -128 * D2R, min: 0, max: 5, tr: .6, lr: .45, labels: [0, 1, 2, 3, 4, 5] },
+    icons: [['oil', -.52, .0], ['oil', -.46, .3]]
+  },
+  oilp: {
+    U: { px: -.12, py: -.2,  start: 0, sweep: -150 * D2R, min: 60, max: 150, tr: .52, lr: .37, labels: [60, 90, 120] },
+    L: { px: -.3,  py: .27,  start: 148 * D2R, sweep: -124 * D2R, min: 0, max: 1, tr: .6, lr: .45, labels: [0, .5, 1], fmt: v => v === 0 ? '0' : v === 1 ? '4/4' : '2/4' },
+    icons: [['therm', .44, .02], ['pump', .44, .4]]
+  }
 };
-function faceDual(name, cfg) {
-  const { f: c, S, R } = D[name]; baseFace(c, S, .8); c.save(); c.translate(R, R);
-  const d = DUAL[name], opt = { tr: .6, lr: .45, ls: .095, L: [.07, .045, .032], W: [.018, .014, .01] };
-  scale(c, R, { ...cfg.up, ...d.up, ...opt });
-  scale(c, R, { ...cfg.lo, ...d.lo, ...opt });
-  cfg.icons.forEach(i => ico(c, R, i[0], i[1], i[2], .17, '#f2f2f2', .9));
-  c.restore();
+function faceDual(name) {
+  const { f: c, S, R } = D[name]; baseFace(c, S, name);
+  const d = DUAL[name];
+  [d.U, d.L].forEach((a, i) => {
+    c.save(); c.translate(a.px * R, a.py * R);
+    scale(c, R, { min: a.min, max: a.max, start: a.start, sweep: a.sweep, tr: a.tr, labels: a.labels, fmt: a.fmt, lr: a.lr, ls: .12, sc: true,
+                  major: i ? (a.max > 2 ? 1 : .5) : 30, minor: i ? (a.max > 2 ? .25 : .125) : 10,
+                  L: [.075, .075, .045], W: [.018, .018, .011], lw: 600, tc: '#e6a83a',
+                  reds: i ? (a.max > 2 ? [[0, .4]] : [[0, .08]]) : [[135, 150]], redW: .03 });
+    c.restore();
+  });
+  d.icons.forEach(i => ico(c, R, i[0], i[1], i[2], .2, '#e8e8ec', .85));
+  endFace(c); bloom(c, S);
 }
 
-/* ----- 바늘: 굵은 주황색 + 검은 원판 허브 ----- */
+/* ----- 바늘 ----- */
 function needle(c, R, a, o) {
   c.save(); c.rotate(a);
   const path = () => {
     c.beginPath();
-    c.moveTo(-o.tail * R, -o.w * R * .9); c.lineTo(0, -o.w * R); c.lineTo(o.len * R, -o.w * R * .62);
-    c.lineTo(o.len * R, o.w * R * .62); c.lineTo(0, o.w * R); c.lineTo(-o.tail * R, o.w * R * .9); c.closePath();
+    c.moveTo(-o.tail * R, -o.w * R * .9); c.lineTo(0, -o.w * R); c.lineTo(o.len * R, -o.w * R * .3);
+    c.lineTo(o.len * R, o.w * R * .3); c.lineTo(0, o.w * R); c.lineTo(-o.tail * R, o.w * R * .9); c.closePath();
   };
-  c.shadowColor = 'rgba(0,0,0,.7)'; c.shadowBlur = R * .04; c.shadowOffsetX = R * .015; c.shadowOffsetY = R * .03;
+  c.shadowColor = 'rgba(0,0,0,.8)'; c.shadowBlur = R * .04; c.shadowOffsetX = R * .02; c.shadowOffsetY = R * .035;
   path(); c.fillStyle = '#000'; c.fill();
-  c.shadowColor = 'rgba(255,120,20,.8)'; c.shadowBlur = R * .04; c.shadowOffsetX = c.shadowOffsetY = 0;
+  c.shadowColor = 'rgba(255,150,20,.8)'; c.shadowBlur = R * .03; c.shadowOffsetX = c.shadowOffsetY = 0;
   const g = c.createLinearGradient(0, -o.w * R, 0, o.w * R);
-  g.addColorStop(0, '#ffa23a'); g.addColorStop(.5, '#ff8212'); g.addColorStop(1, '#e06a06');
+  g.addColorStop(0, '#ffc25a'); g.addColorStop(.5, '#ff9a14'); g.addColorStop(1, '#dc7000');
   path(); c.fillStyle = g; c.fill();
   c.restore();
 }
 function hub(c, r) {
-  const g = c.createRadialGradient(-r * .25, -r * .3, r * .1, 0, 0, r);
-  g.addColorStop(0, '#222224'); g.addColorStop(.7, '#0c0c0d'); g.addColorStop(1, '#030303');
+  const g = c.createRadialGradient(-r * .3, -r * .35, r * .1, 0, 0, r);
+  g.addColorStop(0, '#3a3b40'); g.addColorStop(.7, '#0b0b0c'); g.addColorStop(1, '#020202');
   c.fillStyle = g; c.beginPath(); c.arc(0, 0, r, 0, TAU); c.fill();
-  c.strokeStyle = 'rgba(255,150,60,.22)'; c.lineWidth = r * .06; c.beginPath(); c.arc(0, 0, r * .96, 0, TAU); c.stroke();
+  c.strokeStyle = 'rgba(200,204,212,.3)'; c.lineWidth = r * .06; c.beginPath(); c.arc(0, 0, r * .95, 0, TAU); c.stroke();
 }
 
 function nTach(rpm, gear, kmh, st) {
-  const { n: c, S, R } = D.tach; c.clearRect(0, 0, S, S); c.save(); c.translate(R, R);
-  if (st.limit) { c.save(); c.lineWidth = R * .1; c.strokeStyle = 'rgba(255,60,30,.5)'; c.shadowColor = '#ff3020'; c.shadowBlur = R * .1;
-    c.beginPath(); c.arc(0, 0, R * .81, A0 + SW * .9, A0 + SW); c.stroke(); c.restore(); }
+  const c = D.tach.n, S = D.tach.S, R = beginNeedle(c, S, 'tach');
+  if (st.limit) { c.save(); c.lineWidth = R * .08; c.strokeStyle = 'rgba(255,90,30,.6)'; c.shadowColor = '#ff5020'; c.shadowBlur = R * .08;
+    c.beginPath(); c.arc(0, 0, R * .78, A0 + SW * .9, A0 + SW); c.stroke(); c.restore(); }
   TACH_ICONS.forEach(i => { if (i.lit(st)) ico(c, R, i.k, i.x, i.y, i.s, i.col, 1); });
   const gi = st.park ? 0 : 3;
   c.fillStyle = '#ff3b30'; c.shadowColor = '#ff3b30'; c.shadowBlur = R * .03;
-  c.beginPath(); c.arc(.285 * R, (.22 + gi * .08) * R, R * .014, 0, TAU); c.fill(); c.shadowBlur = 0;
-  if (gear) seg7(c, String(gear), -.08 * R, .33 * R, .09 * R, WHITE, 'center');
-  seg7(c, String(Math.round(kmh)), .12 * R, .66 * R, .17 * R, WHITE, 'right');
-  txt(c, 'km/h', .17 * R, .7 * R, .045 * R, { color: '#e9e9e9', weight: 700, num: true, align: 'left' });
-  needle(c, R, A0 + SW * clamp(rpm / 10000, 0, 1.03), { len: .83, tail: .02, w: .028 }); hub(c, R * .16);
+  c.beginPath(); c.arc(.235 * R, (.2 + gi * .075) * R, R * .013, 0, TAU); c.fill(); c.shadowBlur = 0;
+  if (gear) seg7(c, String(gear), 0, .26 * R, .09 * R, WHITE, 'center');
+  seg7(c, String(Math.round(kmh)), .13 * R, .64 * R, .14 * R, WHITE, 'right');
+  txt(c, 'km/h', .18 * R, .66 * R, .042 * R, { color: '#e8e8ec', weight: 600, num: true, sc: true, align: 'left' });
+  needle(c, R, A0 + SW * clamp(rpm / 10000, 0, 1.03), { len: .76, tail: .06, w: .03 }); hub(c, R * .13);
   c.restore();
 }
 function nSpeed(kmh, trip, st) {
-  const { n: c, S, R } = D.speed; c.clearRect(0, 0, S, S); c.save(); c.translate(R, R);
-  ico(c, R, 'head', .04, .29, .12, '#31d27a', 1);
-  seg7(c, String(Math.floor(8567 + trip / 1000)), .3 * R, .56 * R, .12 * R, WHITE, 'right');
-  txt(c, 'km', .34 * R, .58 * R, .04 * R, { color: '#e9e9e9', weight: 700, num: true, align: 'left' });
-  seg7(c, (trip / 1000).toFixed(1), .3 * R, .72 * R, .12 * R, WHITE, 'right');
-  needle(c, R, SP.start + SP.sweep * clamp(kmh / SP.max, 0, 1.03), { len: .66, tail: .02, w: .035 }); hub(c, R * .15);
+  const c = D.speed.n, S = D.speed.S, R = beginNeedle(c, S, 'speed');
+  if (st.sweep) { ico(c, R, 'tire', 0, -.32, .14, '#ff9a1a', 1); ico(c, R, 'fog', .21, -.27, .12, '#ff9a1a', 1); }
+  seg7(c, String(Math.floor(35706 + trip / 1000)), .32 * R, .55 * R, .075 * R, WHITE, 'right');
+  txt(c, 'KM', .36 * R, .56 * R, .04 * R, { color: '#d4d4d8', weight: 600, num: true, sc: true, align: 'left' });
+  seg7(c, (trip / 1000).toFixed(1), .32 * R, .67 * R, .075 * R, WHITE, 'right');
+  needle(c, R, SP.start + SP.sweep * clamp(kmh / SP.max, 0, 1.03), { len: .75, tail: .06, w: .032 }); hub(c, R * .15);
   c.restore();
 }
-function nTFT(timeStr, rangeKm) {
-  const { n: c, S, R } = D.tft; c.clearRect(0, 0, S, S); c.save(); c.translate(R, R);
-  const g = R * .78, now = new Date(), W = '#f4f6f8';
-  // 항속거리
-  ico(c, g, 'pump', -.26, -.97 + .0, .26, W, 1);
-  txt(c, rangeKm + ' km', .2 * g, -.97 * g, .17 * g, { color: W, weight: 700, num: true });
-  // 헤더 바 (스톱워치 시간)
-  c.beginPath(); c.moveTo(-.46 * g, -.8 * g); c.lineTo(.86 * g, -.8 * g); c.lineTo(.98 * g, -.57 * g); c.lineTo(-.46 * g, -.57 * g); c.closePath();
-  const hg = c.createLinearGradient(0, -.8 * g, 0, -.57 * g); hg.addColorStop(0, '#46474b'); hg.addColorStop(1, '#232427');
-  c.fillStyle = hg; c.fill();
-  c.fillStyle = '#e4482a'; c.fillRect(-.46 * g, -.575 * g, 1.44 * g, .018 * g);
-  txt(c, timeStr, -.4 * g, -.69 * g, .19 * g, { color: W, weight: 700, num: true, align: 'left' });
-  // 차량(위에서 본 모습) + 타이어 압력
-  const body = c.createLinearGradient(-.26 * g, 0, .26 * g, 0); body.addColorStop(0, '#9c9ca2'); body.addColorStop(.5, '#d8d8dc'); body.addColorStop(1, '#9c9ca2');
-  c.fillStyle = '#5c5c62';
-  [[-.37, -.44], [.27, -.44], [-.37, .2], [.27, .2]].forEach(([x, y]) => { c.beginPath(); c.roundRect(x * g, y * g, .1 * g, .24 * g, .03 * g); c.fill(); });
-  c.fillStyle = body; c.beginPath(); c.roundRect(-.26 * g, -.52 * g, .52 * g, 1.02 * g, .2 * g); c.fill();
-  c.fillStyle = '#3c3c42'; c.beginPath(); c.roundRect(-.2 * g, -.2 * g, .4 * g, .4 * g, .08 * g); c.fill();
-  c.fillStyle = '#4a4a50'; c.beginPath(); c.roundRect(-.18 * g, -.38 * g, .36 * g, .14 * g, .05 * g); c.fill();
-  [[-.39, -.33, '2.2'], [.37, -.34, '2.2'], [-.42, .37, '2.4'], [.33, .37, '2.4']].forEach(([x, y, v]) =>
-    txt(c, v, x * g, y * g, .16 * g, { color: W, weight: 700, num: true }));
-  txt(c, 'bar', .72 * g, .04 * g, .11 * g, { color: '#d8d8dc', weight: 600, num: true });
-  // 시계/온도
-  c.fillStyle = 'rgba(255,255,255,.7)'; c.fillRect(-.98 * g, .58 * g, 1.8 * g, .012 * g);
-  txt(c, p2(now.getHours()) + ':' + p2(now.getMinutes()), -.09 * g, .73 * g, .19 * g, { color: W, weight: 700, num: true });
-  txt(c, '23 °C', -.09 * g, .92 * g, .14 * g, { color: W, weight: 600, num: true });
+// TFT: 정지 상태 = 대기 화면(차 윤곽 + GT3 + 시계), 주행 중 = Vehicle 페이지 + 스톱워치
+function nTFT(active, timeStr, rangeKm, oP, oT, coolT, fuel) {
+  const c = D.tft.n, S = D.tft.S, R = beginNeedle(c, S, 'tft');
+  const Rs = R * FC.tft.F * .96, u = Rs, W = '#f4f6f8', now = new Date();
+  c.beginPath(); c.arc(0, 0, Rs, 0, TAU); c.clip();
+  let g = c.createLinearGradient(-Rs, -Rs * .3, Rs, Rs * .3);
+  g.addColorStop(0, '#08142a'); g.addColorStop(.55, '#0d2a63'); g.addColorStop(1, '#1b57c4');
+  c.fillStyle = active ? '#050b18' : g; c.fillRect(-Rs, -Rs, 2 * Rs, 2 * Rs);
+  if (!active) {
+    // 911 GT3 측면 실루엣 (왼쪽 = 앞, 오른쪽 = 리어 윙)
+    c.save(); c.translate(0, -.12 * u); c.scale(u, u);
+    c.strokeStyle = '#e4f1ff'; c.lineWidth = .012; c.lineCap = 'round'; c.lineJoin = 'round';
+    c.shadowColor = 'rgba(160,210,255,.8)'; c.shadowBlur = u * .02;
+    c.beginPath();
+    c.moveTo(-.6, .05); c.quadraticCurveTo(-.62, -.01, -.56, -.03);           // 앞 범퍼
+    c.lineTo(-.22, -.08);                                                       // 보닛
+    c.quadraticCurveTo(-.12, -.1, -.04, -.19);                                   // 앞유리
+    c.bezierCurveTo(.06, -.24, .2, -.24, .3, -.17);                              // 지붕
+    c.bezierCurveTo(.38, -.12, .44, -.09, .48, -.08);                            // 패스트백
+    c.lineTo(.47, -.13); c.lineTo(.62, -.14); c.lineTo(.6, -.1);                 // 리어 윙
+    c.lineTo(.6, -.03); c.quadraticCurveTo(.61, .04, .56, .05);                  // 리어 범퍼
+    c.stroke();
+    c.lineWidth = .008; c.globalAlpha = .7;                                      // 하단 라인 + 휠 아치
+    c.beginPath(); c.moveTo(-.6, .05); c.lineTo(-.48, .05); c.arc(-.38, .05, .1, Math.PI, 0); c.lineTo(.26, .05); c.arc(.36, .05, .1, Math.PI, 0); c.lineTo(.56, .05); c.stroke();
+    c.restore();
+    txt(c, 'GT3', .02 * u, .2 * u, .2 * u, { style: 'italic', weight: 700, num: true, color: '#fff' });
+    c.fillStyle = 'rgba(255,255,255,.6)'; c.fillRect(-.75 * u, .56 * u, 1.5 * u, .012 * u);
+    const h = now.getHours(), pm = h >= 12;
+    txt(c, p2(h % 12 || 12) + ':' + p2(now.getMinutes()), -.12 * u, .72 * u, .14 * u, { color: W, weight: 700, num: true, sc: true });
+    txt(c, pm ? 'PM' : 'AM', .22 * u, .74 * u, .07 * u, { color: W, weight: 700, num: true, sc: true });
+    c.restore(); return;
+  }
+  ico(c, u, 'pump', -.4, -.77, .2, W, 1);
+  txt(c, rangeKm + ' km', -.18 * u, -.77 * u, .18 * u, { color: W, weight: 600, num: true, sc: true, align: 'left' });
+  c.beginPath(); c.moveTo(-1.1 * u, -.58 * u); c.lineTo(.55 * u, -.58 * u); c.lineTo(.7 * u, -.37 * u); c.lineTo(-1.1 * u, -.37 * u); c.closePath();
+  g = c.createLinearGradient(-1.1 * u, 0, .7 * u, 0); g.addColorStop(0, '#2467c7'); g.addColorStop(.7, '#1a4ea0'); g.addColorStop(1, '#2a6fd0');
+  c.fillStyle = g; c.fill();
+  c.fillStyle = '#e8eef8'; c.fillRect(-1.1 * u, -.375 * u, 1.8 * u, .02 * u);
+  txt(c, 'Vehicle', -.8 * u, -.475 * u, .19 * u, { color: W, weight: 600, num: true, sc: true, align: 'left' });
+  const rows = [
+    ['therm', (coolT - 40) / 90, Math.round(coolT) + ' °C'],
+    ['oil',   (oT - 40) / 110,   Math.round(oT) + ' °C'],
+    ['oil',   oP / 6,            oP.toFixed(1) + ' bar'],
+    ['batt',  .7,                (14 + Math.sin(performance.now() / 4000) * .2).toFixed(1) + ' V']
+  ];
+  rows.forEach((r, i) => {
+    const y = -.18 + i * .275;
+    ico(c, u, r[0], -.74, y, .18, '#5fd0ff', 1);
+    const bx = -.6, bw = .52, bh = .085;
+    c.fillStyle = 'rgba(255,255,255,.14)'; c.fillRect(bx * u, (y - bh / 2) * u, bw * u, bh * u);
+    c.fillStyle = '#2f86f0'; c.fillRect(bx * u, (y - bh / 2) * u, bw * u * clamp(r[1], 0, 1), bh * u);
+    c.fillStyle = '#f08a2a'; c.fillRect((bx + bw * .82) * u, (y - bh / 2) * u, bw * .18 * u, bh * u);
+    txt(c, r[2], .62 * u, y * u, .18 * u, { color: W, weight: 600, num: true, sc: true, align: 'right' });
+  });
+  c.fillStyle = 'rgba(255,255,255,.6)'; c.fillRect(-.75 * u, .78 * u, 1.5 * u, .012 * u);
+  txt(c, timeStr, 0, .9 * u, .12 * u, { color: W, weight: 600, mono: true });
   c.restore();
 }
 function nDual(name, up, lo) {
-  const { n: c, S, R } = D[name]; c.clearRect(0, 0, S, S); c.save(); c.translate(R, R);
-  const d = DUAL[name];
-  const o = { len: .52, tail: .02, w: .035 };
-  needle(c, R, d.up.start + d.up.sweep * clamp(up, 0, 1.05), o);
-  needle(c, R, d.lo.start + d.lo.sweep * clamp(lo, 0, 1.05), o);
-  hub(c, R * .13);
+  const c = D[name].n, S = D[name].S, R = beginNeedle(c, S, name), d = DUAL[name];
+  [[d.U, up, .5], [d.L, lo, .6]].forEach(([a, v, len]) => {
+    c.save(); c.translate(a.px * R, a.py * R);
+    needle(c, R, a.start + a.sweep * clamp(v, 0, 1.05), { len, tail: .05, w: .04 });
+    hub(c, R * .11); c.restore();
+  });
   c.restore();
 }
 
@@ -537,9 +703,16 @@ const r2 = () => rec.r200 === null ? '--.-' : rec.r200.toFixed(1);
 function recordStep(dt) {
   if (rec.active && running) {
     rec.t += dt;
-    if (rec.r100 === null && sim.v * 3.6 >= 100) { rec.r100 = rec.t; $('r100').textContent = rec.t.toFixed(1); }
-    if (rec.r200 === null && sim.v * 3.6 >= 200) { rec.r200 = rec.t; $('r200').textContent = rec.t.toFixed(1); }
-  }
+    const kmh = sim.v * 3.6;
+    if (rec.r100 === null) {                            // 100km/h 도달 전: 숫자가 실시간으로 올라간다
+      if (kmh >= 100) { rec.r100 = rec.t; $('r100').textContent = rec.t.toFixed(1); $('r100').classList.remove('live'); }
+      else { $('r100').textContent = rec.t.toFixed(1); $('r100').classList.add('live'); }
+    }
+    if (rec.r200 === null && rec.r100 !== null) {
+      if (kmh >= 200) { rec.r200 = rec.t; $('r200').textContent = rec.t.toFixed(1); $('r200').classList.remove('live'); }
+      else { $('r200').textContent = rec.t.toFixed(1); $('r200').classList.add('live'); }
+    }
+  } else { $('r100').classList.remove('live'); $('r200').classList.remove('live'); }
   const k = Math.round(sim.v * 3.6);
   if (k > rec.vmax) { rec.vmax = k; $('rmax').textContent = k; }
 }
@@ -576,42 +749,137 @@ addEventListener('keydown', e => {
   else if (e.key.toLowerCase() === 'm') $('snd').click();
 });
 
-/* ----- 엔진 사운드 (선택) ----- */
-let ac = null, o1, o2, filt, vol, soundOn = false;
+/* ----- 엔진 사운드 (991 GT3 추정 합성) -----
+   수평대향 6기통: 회전당 3번 폭발 → 기본 차수 1.5·3·4.5·6… 하모닉스를 rpm·부하에 따라 합성하고,
+   배기 공명(밴드패스), 흡기 노이즈, 변속 점화 차단/팝, 기어 소음, 풍절음을 더한다. */
+let ac = null, EN = null, soundOn = false, lastGearA = 0, lastLoadA = 0, lastPop = 0;
+const ORDERS = [1.5, 3, 4.5, 6, 7.5, 9, 12, 15, 18];
+
 function ensureAudio() { if (soundOn && ac && ac.state === 'suspended') ac.resume(); }
+
+function buildEngine() {
+  ac = new (window.AudioContext || window.webkitAudioContext)();
+  const N = {};
+  const master = ac.createGain(); master.gain.value = 0;
+  const comp = ac.createDynamicsCompressor();
+  comp.threshold.value = -20; comp.ratio.value = 5; comp.attack.value = .004; comp.release.value = .15;
+  const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 7000; lp.Q.value = .5;
+  master.connect(lp); lp.connect(comp); comp.connect(ac.destination);
+
+  // 하모닉스 뱅크 → 웨이브셰이퍼(배기 거침) → 공명 필터들
+  const bus = ac.createGain();
+  const shaper = ac.createWaveShaper(); N.shaper = shaper;
+  const curve = new Float32Array(1024);
+  for (let i = 0; i < 1024; i++) { const x = i / 512 - 1; curve[i] = Math.tanh(x * 2.2) * .9 + x * .1; }
+  shaper.curve = curve; shaper.oversample = '2x';
+  bus.connect(shaper);
+  const res = [[520, 1.2, 4], [1100, 1.6, 5], [2300, 2.2, 6], [3800, 2.6, 4]].map(([f, q, g]) => {
+    const b = ac.createBiquadFilter(); b.type = 'peaking'; b.frequency.value = f; b.Q.value = q; b.gain.value = g; return b;
+  });
+  let prev = shaper; res.forEach(b => { prev.connect(b); prev = b; });
+  prev.connect(master);
+  N.bus = bus; N.master = master; N.lp = lp;
+  N.osc = ORDERS.map(() => { const o = ac.createOscillator(); o.type = 'sine'; const g = ac.createGain(); g.gain.value = 0; o.connect(g); g.connect(bus); o.start(); return { o, g }; });
+
+  // 노이즈 소스 (흡기 / 풍절음 / 점화 팝)
+  const nb = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate), d = nb.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const mkNoise = () => { const s = ac.createBufferSource(); s.buffer = nb; s.loop = true; s.start(); return s; };
+  // 흡기: 밴드패스, 부하에 비례
+  const inS = mkNoise(), inBP = ac.createBiquadFilter(); inBP.type = 'bandpass'; inBP.frequency.value = 1800; inBP.Q.value = .8;
+  const inG = ac.createGain(); inG.gain.value = 0; inS.connect(inBP); inBP.connect(inG); inG.connect(master);
+  N.inBP = inBP; N.inG = inG;
+  // 폭발 주기에 맞춰 흔들리는 배기 거친 소리: 노이즈 × (오실레이터 AM)
+  const exS = mkNoise(), exBP = ac.createBiquadFilter(); exBP.type = 'bandpass'; exBP.frequency.value = 900; exBP.Q.value = .6;
+  const exG = ac.createGain(); exG.gain.value = 0; exS.connect(exBP); exBP.connect(exG); exG.connect(master);
+  const am = ac.createOscillator(); am.type = 'sine'; const amG = ac.createGain(); amG.gain.value = 0; am.connect(amG); amG.connect(exG.gain); am.start();
+  N.exBP = exBP; N.exG = exG; N.am = am; N.amG = amG;
+  // 풍절음 + 타이어
+  const wS = mkNoise(), wLP = ac.createBiquadFilter(); wLP.type = 'lowpass'; wLP.frequency.value = 500; wLP.Q.value = .4;
+  const wG = ac.createGain(); wG.gain.value = 0; wS.connect(wLP); wLP.connect(wG); wG.connect(master);
+  N.wLP = wLP; N.wG = wG;
+  // 기어 소음 (속도 비례 사인)
+  const gw = ac.createOscillator(); gw.type = 'triangle'; const gwG = ac.createGain(); gwG.gain.value = 0; gw.connect(gwG); gwG.connect(master); gw.start();
+  N.gw = gw; N.gwG = gwG;
+  // 점화 팝 / 크랙 (일회성)
+  N.nb = nb;
+  EN = N;
+}
+function pop(vol, freq, dur) {
+  if (!ac || !EN) return;
+  const t = ac.currentTime, s = ac.createBufferSource(); s.buffer = EN.nb; s.loopStart = Math.random(); s.loop = true;
+  const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = freq; bp.Q.value = 1.1;
+  const g = ac.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+  s.connect(bp); bp.connect(g); g.connect(EN.master); s.start(t); s.stop(t + dur + .02);
+}
+
 $('snd').onclick = () => {
   soundOn = !soundOn; $('snd').classList.toggle('on', soundOn);
-  if (soundOn && !ac) {
-    ac = new (window.AudioContext || window.webkitAudioContext)();
-    o1 = ac.createOscillator(); o1.type = 'sawtooth';
-    o2 = ac.createOscillator(); o2.type = 'square';
-    filt = ac.createBiquadFilter(); filt.type = 'lowpass'; filt.Q.value = 2;
-    vol = ac.createGain(); vol.gain.value = 0;
-    const g2 = ac.createGain(); g2.gain.value = .35;
-    o1.connect(filt); o2.connect(g2); g2.connect(filt); filt.connect(vol); vol.connect(ac.destination);
-    o1.start(); o2.start();
-  }
-  if (ac) { soundOn ? ac.resume() : (vol.gain.setTargetAtTime(0, ac.currentTime, .05)); }
+  if (soundOn && !ac) buildEngine();
+  if (ac) { soundOn ? ac.resume() : EN.master.gain.setTargetAtTime(0, ac.currentTime, .06); }
 };
+
 function audioUpdate() {
-  if (!ac || !soundOn) return;
-  const t = ac.currentTime, f = sim.rpm / 60 * 3;           // 수평대향 6기통: 회전당 3폭발
-  o1.frequency.setTargetAtTime(f, t, .02); o2.frequency.setTargetAtTime(f * 2, t, .02);
-  filt.frequency.setTargetAtTime(350 + sim.rpm * .75 + sim.load * 900, t, .04);
-  vol.gain.setTargetAtTime(0.05 + 0.13 * (sim.load * .8 + sim.rpm / 9000 * .2), t, .05);
+  if (!ac || !soundOn || !EN) return;
+  const t = ac.currentTime, rpm = sim.rpm, r = rpm / 60, f1 = r * 3, kmh = sim.v * 3.6;
+  const rk = clamp(rpm / 9000, 0, 1.05), load = sim.shiftT > 0 ? 0 : sim.load;
+  const cut = sim.shiftT > 0 ? .12 : 1;                               // 변속 중 점화 차단 → 소리 뚝
+  const idle = rpm < 1300;
+  // 하모닉스: 고차수일수록 고회전/고부하에서 커짐 (금속성 비명)
+  EN.osc.forEach(({ o, g }, i) => {
+    const ord = ORDERS[i];
+    o.frequency.setTargetAtTime(r * ord, t, .018);
+    const hi = clamp((ord - 4) / 14, 0, 1);
+    const a = (ord === 3 || ord === 6 ? 1 : ord === 1.5 ? .7 : .55) * (1 - hi * .25) * (.25 + .75 * load) * (hi ? (.15 + .85 * rk * rk) : 1);
+    g.gain.setTargetAtTime(a * .09 * cut, t, .03);
+  });
+  EN.shaper.oversample = '2x';
+  // 흡기 / 거친 배기
+  EN.inBP.frequency.setTargetAtTime(900 + rpm * .35, t, .05);
+  EN.inG.gain.setTargetAtTime(.12 * load * rk * cut, t, .04);
+  EN.exBP.frequency.setTargetAtTime(500 + rpm * .12, t, .05);
+  EN.exG.gain.setTargetAtTime(.05 + .1 * load, t, .05);
+  EN.am.frequency.setTargetAtTime(f1, t, .02); EN.amG.gain.setTargetAtTime(.08 + .1 * load, t, .05);
+  // 풍절음 + 타이어 + 기어 소음
+  EN.wLP.frequency.setTargetAtTime(300 + kmh * 7, t, .1);
+  EN.wG.gain.setTargetAtTime(Math.pow(kmh / 220, 2) * .22, t, .15);
+  EN.gw.frequency.setTargetAtTime(380 + kmh * 9, t, .08);
+  EN.gwG.gain.setTargetAtTime(clamp(kmh / 200, 0, 1) * .012 * (.4 + load), t, .1);
+  // 전체 볼륨: 오프스로틀(엔진 브레이크)은 작게, 풀 스로틀 고회전은 크게
+  const vol = (idle ? .22 : .32 + .5 * load) * (.55 + .45 * rk);
+  EN.master.gain.setTargetAtTime(vol * (.9 + .1 * Math.sin(t * (idle ? 38 : 0))), t, .05);
+  EN.lp.frequency.setTargetAtTime(2500 + rpm * .6 + load * 2200, t, .08);
+  // 변속 이벤트: 업시프트 = 점화 컷 뒤 팝, 다운시프트 = 블립 크랙
+  if (sim.gear !== lastGearA) {
+    if (sim.gear > lastGearA && lastGearA > 0) { pop(.22, 1100, .09); setTimeout(() => pop(.14, 700, .07), 130); }
+    else if (sim.gear < lastGearA && sim.gear > 0) pop(.1, 1600, .06);
+    lastGearA = sim.gear;
+  }
+  // 리프트오프 오버런 크랙 (고회전에서 스로틀을 뗄 때)
+  if (lastLoadA > .5 && load < .05 && rpm > 5500 && t - lastPop > .4) {
+    for (let i = 0; i < 3; i++) setTimeout(() => pop(.12 * Math.random() + .05, 900 + Math.random() * 900, .05), i * 70 + Math.random() * 60);
+    lastPop = t;
+  }
+  lastLoadA = load;
 }
 
 /* ============================================================
    메인 루프
    ============================================================ */
 const disp = { rpm: 0, kmh: 0, oilT: 60, oilP: 0 };
-let oilT = 82, coolT = 78, last = 0, t0 = null;
+const spr = { rpm: { x: 0, v: 0 }, kmh: { x: 0, v: 0 } };
+function springStep(k, target, dt, w, z) {             // w: 고유진동수, z: 감쇠비 (<1 이면 살짝 튕김)
+  const n = Math.max(1, Math.ceil(dt / (1 / 480)));
+  for (let i = 0; i < n; i++) { const h = dt / n; k.v += (w * w * (target - k.x) - 2 * z * w * k.v) * h; k.x += k.v * h; }
+  return k.x;
+}
+let oilT = 82, coolT = 78, last = 0, t0 = null, lcdT = 0, lcdKmh = 0;
 const sweepDur = 1.9;
 
 function frame(ts) {
   if (t0 === null) t0 = ts;
-  const dt = Math.min(0.05, last ? (ts - last) / 1000 : 0.016); last = ts;
-  const n = 4; for (let i = 0; i < n; i++) sim.step(dt / n, running);
+  const dt = Math.min(0.5, last ? (ts - last) / 1000 : 0.016); last = ts;
+  const n = Math.max(2, Math.ceil(dt / 0.004)); for (let i = 0; i < n; i++) sim.step(dt / n, running);
   recordStep(dt); audioUpdate();
 
   oilT += ((84 + 38 * sim.load * (0.4 + sim.rpm / 9000) + 10 * sim.rpm / 9000) - oilT) * dt / 45;
@@ -619,43 +887,40 @@ function frame(ts) {
 
   const kk = 1 - Math.exp(-dt * 16);
   const idleJit = sim.gear === 0 || sim.v < 1 ? Math.sin(ts / 53) * 14 + Math.sin(ts / 131) * 9 : 0;
-  disp.rpm += (sim.rpm + idleJit - disp.rpm) * kk;
-  disp.kmh += (sim.v * 3.6 - disp.kmh) * kk;
+  disp.rpm = springStep(spr.rpm, sim.rpm + idleJit, dt, 24, .62);
+  disp.kmh = springStep(spr.kmh, sim.v * 3.6, dt, 16, .85);
   disp.oilT += (oilT - disp.oilT) * kk; disp.oilP += (oilP - disp.oilP) * kk;
 
-  let rpm = disp.rpm, kmh = disp.kmh, oT = disp.oilT, oP = disp.oilP;
+  let rpm = disp.rpm, kmh = disp.kmh, oT = disp.oilT, oP = disp.oilP, cT = coolT;
   const el = (ts - t0) / 1000, sweeping = el < sweepDur;
   if (sweeping) {                                          // 시동 시 전체 바늘 스윕
     const e = Math.sin(Math.min(1, el / sweepDur) * Math.PI) ** 0.9;
-    rpm = Math.max(rpm, 10000 * e); kmh = Math.max(kmh, 340 * e); oT = Math.max(oT, 50 + 100 * e); oP = Math.max(oP, 5 * e); coolT = Math.max(coolT, 50 + 80 * e);
+    rpm = Math.max(rpm, 10000 * e); kmh = Math.max(kmh, 340 * e); oT = Math.max(oT, 50 + 100 * e); oP = Math.max(oP, 5 * e); cT = Math.max(cT, 50 + 80 * e);
   }
   const tstr = fmt(swNow());
   const st = { sweep: sweeping, brake: !running && sim.v > 0.3, limit: sim.rpm > 8800 };
   st.park = !running && sim.v < 0.3 && sim.gear === 0;
   coolT += ((80 + 12 * sim.load + 6 * sim.rpm / 9000) - coolT) * dt / 60;
   const fuel = Math.max(0.05, 0.62 - sim.dist * 2.4e-6);
-  nTach(rpm, sim.gear, kmh, st); nSpeed(kmh, sim.dist, st);
-  nTFT(tstr, Math.round(fuel * 520));
+  if (ts - lcdT > 90) { lcdT = ts; lcdKmh = kmh; }
+  nTach(rpm, sim.gear, lcdKmh, st); nSpeed(kmh, sim.dist, st);
+  nTFT(running || sim.v > 1 || swNow() > 0, tstr, Math.round(fuel * 520), oP, oT, cT, fuel);
   nDual('oilt', (oT - 60) / 90, oP / 5);
-  nDual('oilp', (coolT - 50) / 80, fuel);
+  nDual('oilp', (cT - 60) / 90, fuel);
 
   $('time').textContent = tstr;
   requestAnimationFrame(frame);
 }
 
 function init() {
+  makeGrain();
   mk('tach', 900); mk('speed', 800); mk('tft', 640); mk('oilt', 480); mk('oilp', 480);
   faceTach(); faceSpeed(); faceTFT();
-  faceDual('oilt', { up: { major: 20, minor: 5, labels: [80, 100, 120, 140], reds: [[135, 150]] },
-                     lo: { major: 1, minor: .25, labels: [0, 1, 2, 3, 4, 5], reds: [[0, .4]] },
-                     icons: [['oil', -.7, -.3], ['oil', -.58, .18]] });
-  faceDual('oilp', { up: { major: 20, minor: 5, labels: [60, 90, 120], reds: [[115, 130]] },
-                     lo: { major: .25, minor: .125, labels: [0, .5, 1], fmt: v => v === 0 ? '0' : v === 1 ? '4/4' : '2/4', reds: [[0, .1]] },
-                     icons: [['therm', .66, -.28], ['pump', .6, .2]] });
+  faceDual('oilt'); faceDual('oilp');
   requestAnimationFrame(frame);
 }
 const fontsReady = (document.fonts && document.fonts.load)
-  ? Promise.race([Promise.all([document.fonts.load('600 40px "Barlow Condensed"'), document.fonts.load('700 40px "Montserrat"'), document.fonts.load('italic 800 40px "Montserrat"'), document.fonts.load('400 40px "Share Tech Mono"')]).catch(() => {}),
+  ? Promise.race([Promise.all([document.fonts.load('600 40px "Barlow Condensed"'), document.fonts.load('600 40px "Barlow"'), document.fonts.load('600 40px "Saira"'), document.fonts.load('italic 700 40px "Saira"'), document.fonts.load('700 40px "Barlow Semi Condensed"'), document.fonts.load('italic 700 40px "Barlow"'), document.fonts.load('400 40px "Share Tech Mono"')]).catch(() => {}),
                   new Promise(r => setTimeout(r, 1500))])
   : Promise.resolve();
 fontsReady.then(init);
